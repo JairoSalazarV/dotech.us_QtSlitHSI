@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>slideHypCam</class>
+ <widget class="QMainWindow" name="slideHypCam">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionpbGetSlideCube"/>
+   <addaction name="actionSlide_settings"/>
+  </widget>
+  <action name="actionpbGetSlideCube">
+   <property name="icon">
+    <iconset resource="lstImgs.qrc">
+     <normaloff>:/new/icons/imagenInte/slide.png</normaloff>:/new/icons/imagenInte/slide.png</iconset>
+   </property>
+   <property name="text">
+    <string>pbGetSlideCube</string>
+   </property>
+   <property name="toolTip">
+    <string>Get Slide-Cube</string>
+   </property>
+  </action>
+  <action name="actionSlide_settings">
+   <property name="icon">
+    <iconset resource="lstImgs.qrc">
+     <normaloff>:/new/icons/imagenInte/document-properties.svg</normaloff>:/new/icons/imagenInte/document-properties.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Slide settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Slide settings</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="lstImgs.qrc"/>
+ </resources>
+ <connections/>
+</ui>

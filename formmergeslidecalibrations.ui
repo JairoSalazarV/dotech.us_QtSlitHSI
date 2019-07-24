@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>formMergeSlideCalibrations</class>
+ <widget class="QDialog" name="formMergeSlideCalibrations">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>841</width>
+    <height>316</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Merge Calibration</string>
+  </property>
+  <widget class="QPushButton" name="pbHorizontal">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>20</y>
+     <width>41</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>25</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Horizontal (*)</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtHorPath">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>20</y>
+     <width>631</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor_2">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>65</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Vertical (*)</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtVertPath">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>60</y>
+     <width>631</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbVertical">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>60</y>
+     <width>41</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbMergeCalibration">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>273</y>
+     <width>161</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Merge Calibration</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtCameraID">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>225</y>
+     <width>161</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor_3">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>230</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Camera ID (*)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor_4">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>185</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Origin H (*)</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBoxOriginH">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>180</y>
+     <width>161</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>20</number>
+   </property>
+   <property name="maximum">
+    <number>3000</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor_5">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>105</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Transformation (*)</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbAffineTrans">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>100</y>
+     <width>41</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtAffineTrans">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>100</y>
+     <width>631</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbSensitivities">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>140</y>
+     <width>41</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHor_6">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>145</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sensitivities</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtSensitivities">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>140</y>
+     <width>631</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>pbMergeCalibration</zorder>
+  <zorder>pbHorizontal</zorder>
+  <zorder>labelHor</zorder>
+  <zorder>txtHorPath</zorder>
+  <zorder>labelHor_2</zorder>
+  <zorder>txtVertPath</zorder>
+  <zorder>pbVertical</zorder>
+  <zorder>txtCameraID</zorder>
+  <zorder>labelHor_3</zorder>
+  <zorder>labelHor_4</zorder>
+  <zorder>spinBoxOriginH</zorder>
+  <zorder>labelHor_5</zorder>
+  <zorder>pbAffineTrans</zorder>
+  <zorder>txtAffineTrans</zorder>
+  <zorder>pbSensitivities</zorder>
+  <zorder>labelHor_6</zorder>
+  <zorder>txtSensitivities</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
