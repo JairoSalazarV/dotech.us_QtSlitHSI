@@ -22,10 +22,17 @@
     #define _PATH_LAST_SLIDE_FRAMES_4CUBE   "./settings/lastSlideFrames.hypcam"
 
 
+    //#define _PATH_SETTINGS_RED_WAVELEN      "./settings/Wavelengths/RedWavelength.hypcam"
+    //#define _PATH_SETTINGS_GREEN_WAVELEN    "./settings/Wavelengths/GreenWavelength.hypcam"
+    //#define _PATH_SETTINGS_BLUE_WAVELEN     "./settings/Wavelengths/BlueWavelength.hypcam"
+    //#define _PATH_SETTINGS_EM_ITERATIONS    "./settings/Wavelengths/EMIterations.hypcam"
+
     #define _PATH_SETTINGS_RED_WAVELEN      "./settings/Wavelengths/RedWavelength.hypcam"
     #define _PATH_SETTINGS_GREEN_WAVELEN    "./settings/Wavelengths/GreenWavelength.hypcam"
     #define _PATH_SETTINGS_BLUE_WAVELEN     "./settings/Wavelengths/BlueWavelength.hypcam"
     #define _PATH_SETTINGS_EM_ITERATIONS    "./settings/Wavelengths/EMIterations.hypcam"
+    #define _PATH_SETTINGS_LOWER_LIMIT      "./settings/Wavelengths/lowerLimt.hypcam"
+    #define _PATH_SETTINGS_UPPER_LIMIT      "./settings/Wavelengths/upperLimit.hypcam"
 
     #define _PATH_CALBKG                    "./settings/Calib/backgroundPath.hypcam"
     #define _PATH_CALIB                     "./settings/Calib/"

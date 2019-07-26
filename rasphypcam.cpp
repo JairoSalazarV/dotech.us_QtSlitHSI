@@ -202,7 +202,10 @@ int funcRaspSocketConnect()
 
     //Read PORT
     if( readParamFromFile( _PATH_PORT_TO_CONNECT, fileBuffer ) == 1 )
+    {
+        //qDebug() << "fileBuffer->c_str(): " << fileBuffer->c_str();
         PORT = std::stoi( (char*)fileBuffer->c_str() );
+    }
     else
     {
         debugMsg( "ERROR reading IP or IP corrupted" );
