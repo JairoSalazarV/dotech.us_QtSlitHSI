@@ -239,7 +239,8 @@ int MainWindow::funcValidateMinimalStatus()
     //-------------------------------------------------------
     QList<QString> lstFolders;
     lstFolders << "./SYNC" << "./tmpImages" << "./tmpImages/frames"
-               << "./settings" << "./settings/Calib" << "./settings/Calib/images/" << "./settings/lastPaths/"
+               << "./settings" << "./settings/Calib" << "./settings/Calib/images/"
+               << "./settings/lastPaths/" << "./settings/NDVI/"
                << "./settings/Wavelengths/" << "./settings/Calib/responses"
                << "./XML" << "./XML/camPerfils"
                << "./tmpImages/frames/tmp"
@@ -10820,7 +10821,6 @@ void MainWindow::funcOpticalCorrection(
     //--------------------------------------------
     //Read Slide Calibration
     //--------------------------------------------
-    //Get Default Slide Calibration Path
     QString defaCalibPath;
     defaCalibPath = readAllFile(_PATH_SLIDE_ACTUAL_CALIB_PATH).trimmed();
     if( defaCalibPath.isEmpty() )
@@ -10829,7 +10829,6 @@ void MainWindow::funcOpticalCorrection(
         return (void)false;
     }
     //Read Default Calibration Path
-    //structSlideCalibration slideCalibration;
     if( funcReadSlideCalib( defaCalibPath, slideCalibration ) != _OK )
     {
         funcShowMsgERROR_Timeout("Reading Default Slide Calibration File");
@@ -10842,25 +10841,6 @@ void MainWindow::funcOpticalCorrection(
     double maxWavelen;
     maxWavelen = slideCalibration->maxWave;
     std::cout << "maxWavelen: " << maxWavelen << std::endl;
-    //exit(0);
-    //maxWavelen = readAllFile(_PATH_SLIDE_MAX_WAVELENGTH).trimmed().toDouble(0);
-    //if( maxWavelen < _RASP_CAM_MIN_WAVELENGTH || maxWavelen > _RASP_CAM_MAX_WAVELENGTH )
-    //{
-    //    maxWavelen = _RASP_CAM_MAX_WAVELENGTH;
-    //}
-
-    //--------------------------------------------
-    //Define Flat Plane
-    //--------------------------------------------
-    QPoint P1, P2;
-    int distPixFromLower;
-    maxWavelen = maxWavelen - slideCalibration->originWave;
-    distPixFromLower = round( funcApplyLR(maxWavelen,slideCalibration->wave2DistLR,true) );
-    P1.setX( slideCalibration->originX );
-    P1.setY( slideCalibration->originY );
-    P2.setX( slideCalibration->originX + distPixFromLower );
-    P2.setY( slideCalibration->originY + slideCalibration->originH );
-    std::cout << "(" << P1.x() << ", " << P1.y() << ") to (" << P2.x() << ", " << P2.y() << ")" << std::endl;
 
     //--------------------------------------------
     //Get List of Files in Default Directory
@@ -10869,11 +10849,13 @@ void MainWindow::funcOpticalCorrection(
     QString tmpFramesPath;
     tmpFramesPath.append(_PATH_VIDEO_FRAMES);
     tmpFramesPath.append("tmp/");
+    //List All Files in Directory
+    QList<QFileInfo> lstFrames = funcListFilesInDir( tmpFramesPath );
     //Calc Number of Stabilization Frames
     int numStabFrames;
     numStabFrames = (_STABILIZATION_SECS * _VIDEO_FRAME_RATE)-1;
-    //List All Files in Directory
-    QList<QFileInfo> lstFrames = funcListFilesInDir( tmpFramesPath );
+    //Bound minimum number of frames
+    numStabFrames = (numStabFrames>=(lstFrames.size()*0.51))?1:numStabFrames;
     std::cout << "numFrames: " << lstFrames.size() << std::endl;
     std::cout << "stabilizationFrames: " << numStabFrames << std::endl;
     if( lstFrames.size() < numStabFrames )
@@ -10883,84 +10865,50 @@ void MainWindow::funcOpticalCorrection(
         return (void)false;
     }
 
-    //--------------------------------------------
-    //Get, Transform and Put-back Transformed File
-    //--------------------------------------------
-    //Define subimage
-    QRect subImgRec;
-    subImgRec.setX( P1.x() );
-    subImgRec.setY( P1.y() );
-    subImgRec.setWidth( P2.x() - P1.x() );
-    subImgRec.setHeight( P2.y() - P1.y() );
-    //Update Progess Bar
-    ui->progBar->setVisible(true);
-    ui->progBar->setValue(0);
-    ui->progBar->update();
-    progBarUpdateLabel("Putting Transformed Frames into Memory...",0);
-    //Process and Save Frames
-    QImage tmpImg;
-    int i, progVal;
-    progVal = 0;
-    //Remove Stabilization Frames
-    if(0)
-    {
-        for( i=0; i<numStabFrames; i++ )
-        {
-            //std::cout << "DEL-> i: " << i << " Modified: " << lstFrames.at(i).absoluteFilePath().toStdString() << std::endl;
-            if( funcDeleteFile(lstFrames.at(i).absoluteFilePath()) != _OK )
-            {
-                funcShowMsgERROR("Deleting: "+lstFrames.at(i).absoluteFilePath());
-                break;
-            }
-        }
-    }
-
     //-------------------------------------------------
     //GET LIST OF FILES
     //-------------------------------------------------
     lstFrames = funcListFilesInDir( tmpFramesPath );
 
-
     //-------------------------------------------------
-    //DEFINE ROI
+    //Prepare Transformations
     //-------------------------------------------------
-    QString rect;
-    if( funcLetUserSelectFile(&rect,"Select ROI",this) != _OK )
-    {
-        return (void)false;
-    }
-    squareAperture *tmpSqAperture = (squareAperture*)malloc(sizeof(squareAperture));
-    if( !funGetSquareXML( rect, tmpSqAperture ) )
-    {
-        funcShowMsg("ERROR","Loading _PATH_REGION_OF_INTERES");
-        return (void)false;
-    }
-    QImage firstImg(lstFrames.at(0).absoluteFilePath().trimmed());
-    int xROI, yROI, wROI, hROI;
-    xROI = round(((float)tmpSqAperture->rectX / (float)tmpSqAperture->canvasW) * (float)firstImg.width());
-    yROI = round(((float)tmpSqAperture->rectY / (float)tmpSqAperture->canvasH) * (float)firstImg.height());
-    wROI = round(((float)tmpSqAperture->rectW / (float)tmpSqAperture->canvasW) * (float)firstImg.width());
-    hROI = round(((float)tmpSqAperture->rectH / (float)tmpSqAperture->canvasH) * (float)firstImg.height());
+    structHorizontalCalibration tmpHorizCal;
+    structVerticalCalibration tmpVertCal;
+    //Horizontal Calibration
+    tmpHorizCal.imgW            = slideCalibration->imgW;
+    tmpHorizCal.imgH            = slideCalibration->imgH;
+    tmpHorizCal.a               = slideCalibration->horizLR.a;
+    tmpHorizCal.b               = slideCalibration->horizLR.b;
+    tmpHorizCal.H               = slideCalibration->originH;
+    //Vertical Calibration
+    tmpVertCal.imgW             = slideCalibration->imgW;
+    tmpVertCal.imgH             = slideCalibration->imgH;
+    tmpVertCal.minWave          = slideCalibration->originWave;
+    tmpVertCal.maxWave          = slideCalibration->maxWave;
+    tmpVertCal.dist2WaveLR      = slideCalibration->dist2WaveLR;
+    tmpVertCal.wave2DistLR      = slideCalibration->wave2DistLR;
+    tmpVertCal.vertLR           = slideCalibration->vertLR;
 
     //-------------------------------------------------
     //Get into Memory Transformed Frames
     //-------------------------------------------------    
     //QList<QImage> lstTransImages;
+    int i, progVal;
+    QImage tmpImg;
     lstTransImages->clear();
     for( i=0; i<lstFrames.size(); i++ )
     //for( i=0; i<1; i++ )
     {
-        //std::cout << "MOD-> i: " << i << " Modified: " << lstFrames.at(i).absoluteFilePath().toStdString() << std::endl;
-        //std::cout << "m11: " << slideCalibration->translation.m11() << std::endl;
         tmpImg  = QImage( lstFrames.at(i).absoluteFilePath() );
-        //ROI
-        tmpImg  = tmpImg.copy(xROI,yROI,wROI,hROI);
-        //displayImageFullScreen(tmpImg);
-        tmpImg  = tmpImg.transformed( slideCalibration->translation );
-        //displayImageFullScreen(tmpImg);
-        tmpImg  = tmpImg.copy(subImgRec);
-        //displayImageFullScreen(tmpImg);
+        tmpImg  = functionApplyOpticalCorrection(
+                                                    tmpHorizCal,
+                                                    tmpVertCal,
+                                                    slideCalibration->translation
+                                                 );
+        //Save into memory
         lstTransImages->append( tmpImg );
+
         //Update Progress Bar
         progVal = round( ( (float)(i) / (float)lstFrames.size() ) * 100.0 );
         ui->progBar->setValue(progVal);
@@ -10974,7 +10922,7 @@ void MainWindow::funcOpticalCorrection(
     if( refreshImage == true )
     {
         int pos;
-        pos = round( (float)lstTransImages->size() * 0.5 );
+        pos = round( (float)lstTransImages->size() * 0.65 );
         tmpImg = lstTransImages->at(pos);
         updateDisplayImage( &tmpImg );
     }
@@ -11787,35 +11735,9 @@ void MainWindow::on_actionApply_Optical_Correction_triggered()
     }
 
     //-------------------------------------
-    //Get Subimage
-    //-------------------------------------
-    //Calc Origin
-    QPoint originP = originFromCalibration( tmpHorizCal, tmpVertCal );
-    //Defina Region of Interest
-    QPoint P1, P2;
-    int distPixFromLower;
-    float maxWavelen  = tmpVertCal.maxWave;
-    maxWavelen  = maxWavelen - tmpVertCal.minWave;
-    distPixFromLower = round( funcApplyLR(maxWavelen,tmpVertCal.wave2DistLR,true) );
-    P1.setX( originP.x() );
-    P1.setY( originP.y() );
-    P2.setX( originP.x() + distPixFromLower );
-    P2.setY( originP.y() + tmpHorizCal.H );
-    std::cout << "distPixFromLower: " << distPixFromLower << std::endl;
-    //std::cout << "a: " << tmpVertCal.wavelengthLR.a << " b: " << tmpVertCal.wavelengthLR.b << std::endl;
-    std::cout << "(" << P1.x() << ", " << P1.y() << ") to (" << P2.x() << ", " << P2.y() << ")" << std::endl;
-    //Define Subimage Rect
-    QRect subImgRec;
-    subImgRec.setX( P1.x() );
-    subImgRec.setY( P1.y() );
-    subImgRec.setWidth( P2.x() - P1.x() );
-    subImgRec.setHeight( P2.y() - P1.y() );
-
-    //-------------------------------------
     //Extract Region of Interest
     //-------------------------------------
-    *globalEditImg  = globalEditImg->transformed( T );
-    *globalEditImg  = globalEditImg->copy( subImgRec );
+    *globalEditImg = functionApplyOpticalCorrection( tmpHorizCal, tmpVertCal, T );
 
     //-------------------------------------
     //Display Image Transformed
@@ -11833,6 +11755,45 @@ void MainWindow::on_actionApply_Optical_Correction_triggered()
 
 
 }
+
+QImage MainWindow::functionApplyOpticalCorrection(
+        const structHorizontalCalibration &tmpHorizCal,
+        const structVerticalCalibration &tmpVertCal,
+        const QTransform &T)
+{    
+    //Calc Origin
+    QPoint originP = originFromCalibration( tmpHorizCal, tmpVertCal );
+
+    //Defina Region of Interest
+    QPoint P1, P2;
+    int distPixFromLower;
+    float maxWavelen  = tmpVertCal.maxWave;
+    maxWavelen  = maxWavelen - tmpVertCal.minWave;
+    distPixFromLower = round( funcApplyLR(maxWavelen,tmpVertCal.wave2DistLR,true) );
+
+    P1.setX( originP.x() );
+    P1.setY( originP.y() );
+    P2.setX( originP.x() + distPixFromLower );
+    P2.setY( originP.y() + tmpHorizCal.H );
+
+    //Define Subimage Rect
+    QRect subImgRec;
+    subImgRec.setX( P1.x() );
+    subImgRec.setY( P1.y() );
+    subImgRec.setWidth( P2.x() - P1.x() );
+    subImgRec.setHeight( P2.y() - P1.y() );
+
+    //Transform
+    QImage imgOptCorrec;
+    imgOptCorrec  = globalEditImg->transformed( T );
+
+    //Cut SubArea
+    imgOptCorrec  = imgOptCorrec.copy( subImgRec );
+
+    return imgOptCorrec;
+}
+
+
 
 void MainWindow::on_actionExtract_ROI_triggered()
 {

@@ -78,13 +78,13 @@ void formGenLinearRegression::on_pbGenRegression_clicked()
     double wavelengths[numPoints-1];
     double origin[2];
     double tmpPoint[2];
-    origin[0] = ui->tableLstPoints->item(0,1)->text().trimmed().toDouble(0);
-    origin[1] = ui->tableLstPoints->item(0,2)->text().trimmed().toDouble(0);
+    origin[0] = ui->tableLstPoints->item(0,1)->text().trimmed().toDouble();
+    origin[1] = ui->tableLstPoints->item(0,2)->text().trimmed().toDouble();
     for( i=1; i<numPoints; i++ )
     {
-        tmpPoint[0]         = ui->tableLstPoints->item(i,1)->text().trimmed().toDouble(0);
-        tmpPoint[1]         = ui->tableLstPoints->item(i,2)->text().trimmed().toDouble(0);
-        wavelengths[i-1]    = ui->tableLstPoints->item(i,0)->text().trimmed().toDouble(0);
+        tmpPoint[0]         = ui->tableLstPoints->item(i,1)->text().trimmed().toDouble();
+        tmpPoint[1]         = ui->tableLstPoints->item(i,2)->text().trimmed().toDouble();
+        wavelengths[i-1]    = ui->tableLstPoints->item(i,0)->text().trimmed().toDouble();
         distances[i-1]      = sqrt( pow( (origin[0]-tmpPoint[0])+(origin[1]-tmpPoint[1]), 2.0 ) );
         //funcShowMsgERROR( "Wave: " + QString::number(wavelengths[i-1]) + " Dist: " + QString::number(distances[i-1]) );
     }

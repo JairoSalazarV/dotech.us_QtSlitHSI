@@ -409,7 +409,7 @@ strAllLinReg genCalibXML::calcAllLinReg(lstCalibFileNames *centroids, int x1, in
     //Delta source X
     pointsX[3] = 0.0;
     pointsY[3] = 0.0;
-    linearRegresion waveXB = funcLinearRegression( pointsX, pointsY, 4 );
+    linearRegresion waveXB = funcLinearRegression( pointsX, pointsY, 3 );
     linRegRes.waveHorizA = waveXB.a;
     linRegRes.waveHorizB = waveXB.b;
 
@@ -435,7 +435,7 @@ strAllLinReg genCalibXML::calcAllLinReg(lstCalibFileNames *centroids, int x1, in
     //Delta source X
     pointsX[3]  = 0.0;
     pointsY[3]  = 0.0;
-    linearRegresion waveYB = funcLinearRegression( pointsX, pointsY, 4 );
+    linearRegresion waveYB = funcLinearRegression( pointsX, pointsY, 3 );
     linRegRes.waveVertA = waveYB.a;
     linRegRes.waveVertB = waveYB.b;
 
@@ -460,7 +460,7 @@ strAllLinReg genCalibXML::calcAllLinReg(lstCalibFileNames *centroids, int x1, in
     //Delta source X
     pointsX[3] = 0.0;
     pointsY[3] = 0.0;
-    linearRegresion deltaXB = funcLinearRegression( pointsX, pointsY, 4 );
+    linearRegresion deltaXB = funcLinearRegression( pointsX, pointsY, 3 );
     linRegRes.deltaHorizA = deltaXB.a;
     linRegRes.deltaHorizB = deltaXB.b;
 
@@ -485,7 +485,7 @@ strAllLinReg genCalibXML::calcAllLinReg(lstCalibFileNames *centroids, int x1, in
     //Delta source X
     pointsY[3]  = 0.0;
     pointsX[3]  = 0.0;
-    linearRegresion deltaYB = funcLinearRegression( pointsX, pointsY, 4 );
+    linearRegresion deltaYB = funcLinearRegression( pointsX, pointsY, 3 );
     linRegRes.deltaVertA = deltaYB.a;
     linRegRes.deltaVertB = deltaYB.b;
 

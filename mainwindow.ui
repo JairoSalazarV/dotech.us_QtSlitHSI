@@ -25,9 +25,9 @@
     <property name="geometry">
      <rect>
       <x>-1</x>
-      <y>15</y>
+      <y>10</y>
       <width>1041</width>
-      <height>621</height>
+      <height>661</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -168,7 +168,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="lstImgs.qrc">
+           <iconset>
             <normaloff>:/new/icons/imagenInte/gtk-media-play-ltr.svg</normaloff>:/new/icons/imagenInte/gtk-media-play-ltr.svg</iconset>
           </property>
           <property name="iconSize">
@@ -333,416 +333,6 @@
        <number>0</number>
       </property>
      </widget>
-     <widget class="QFrame" name="frame_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>399</y>
-        <width>351</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="labelSquareShuterSpeed_4">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>45</y>
-         <width>21</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;milliseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>ms</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBoxTimelapse">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>41</y>
-         <width>101</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <property name="minimum">
-        <number>100</number>
-       </property>
-       <property name="maximum">
-        <number>5000</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>45</y>
-         <width>151</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Timelapse interval</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBoxTimelapseDuration">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>5</y>
-         <width>101</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>86400</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_6">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>9</y>
-         <width>151</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Timelapse duration</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_7">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>9</y>
-         <width>41</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seconds&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>secs</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QFrame" name="frame_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>73</y>
-        <width>351</width>
-        <height>321</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QSpinBox" name="spinBoxVideoDuration">
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>250</y>
-         <width>101</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>180</number>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="cbAWB">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>103</y>
-         <width>159</width>
-         <height>29</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>180</y>
-         <width>91</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Shuter Speed</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_3">
-       <property name="geometry">
-        <rect>
-         <x>11</x>
-         <y>107</y>
-         <width>121</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>AWB mode</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBoxShuterSpeed">
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>176</y>
-         <width>101</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>3000000</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>141</y>
-         <width>111</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Exposure mode</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_2">
-       <property name="geometry">
-        <rect>
-         <x>8</x>
-         <y>216</y>
-         <width>151</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Square Shuter Speed</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBoxSquareShuterSpeed">
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>212</y>
-         <width>101</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>3000000</number>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget3">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>6</y>
-         <width>122</width>
-         <height>92</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QCheckBox" name="cbColorBalance">
-          <property name="text">
-           <string>Color balance</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="cbDenoise">
-          <property name="text">
-           <string>Denoise</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="cbFlipped">
-          <property name="text">
-           <string>Vertical Flip</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QComboBox" name="cbExposure">
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>139</y>
-         <width>159</width>
-         <height>29</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupResolution">
-       <property name="geometry">
-        <rect>
-         <x>158</x>
-         <y>6</y>
-         <width>131</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Camera Resolution</string>
-       </property>
-       <widget class="QRadioButton" name="radioRes5Mp">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>29</y>
-          <width>51</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Megapixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>5Mp</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioRes8Mp">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>29</y>
-          <width>51</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Megapixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>8Mp</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_5">
-       <property name="geometry">
-        <rect>
-         <x>8</x>
-         <y>254</y>
-         <width>151</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Video Duration</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelISO">
-       <property name="geometry">
-        <rect>
-         <x>8</x>
-         <y>280</y>
-         <width>219</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>ISO</string>
-       </property>
-      </widget>
-      <widget class="QSlider" name="slideISO">
-       <property name="geometry">
-        <rect>
-         <x>8</x>
-         <y>300</y>
-         <width>331</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="minimum">
-        <number>0</number>
-       </property>
-       <property name="maximum">
-        <number>3000</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_8">
-       <property name="geometry">
-        <rect>
-         <x>264</x>
-         <y>254</y>
-         <width>41</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>secs</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_9">
-       <property name="geometry">
-        <rect>
-         <x>264</x>
-         <y>217</y>
-         <width>41</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Microseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Ms</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelSquareShuterSpeed_10">
-       <property name="geometry">
-        <rect>
-         <x>264</x>
-         <y>181</y>
-         <width>41</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Microseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Ms</string>
-       </property>
-      </widget>
-     </widget>
      <widget class="QFrame" name="frame_5">
       <property name="geometry">
        <rect>
@@ -897,11 +487,376 @@
        </property>
       </widget>
      </widget>
+     <widget class="QFrame" name="frame_7">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>523</y>
+        <width>351</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QSlider" name="slideTriggerTime">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>22</y>
+         <width>331</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>500</number>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelTriggerTime">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>2</y>
+         <width>219</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Triggering time</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="frame_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>351</width>
+        <height>371</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QSpinBox" name="spinBoxVideoDuration">
+       <property name="geometry">
+        <rect>
+         <x>174</x>
+         <y>282</y>
+         <width>101</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>180</number>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cbAWB">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>174</x>
+         <y>135</y>
+         <width>159</width>
+         <height>29</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>212</y>
+         <width>121</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Shutter Speed</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>11</x>
+         <y>139</y>
+         <width>121</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>AWB mode</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBoxShuterSpeed">
+       <property name="geometry">
+        <rect>
+         <x>174</x>
+         <y>208</y>
+         <width>101</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <number>3000000</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>173</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Exposure mode</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_2">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>248</y>
+         <width>151</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Square Shutter Speed</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBoxSquareShuterSpeed">
+       <property name="geometry">
+        <rect>
+         <x>174</x>
+         <y>244</y>
+         <width>101</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <number>3000000</number>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget3">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>10</y>
+         <width>123</width>
+         <height>124</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QCheckBox" name="cbColorBalance">
+          <property name="text">
+           <string>Color balance</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbDenoise">
+          <property name="text">
+           <string>Denoise</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbFlipped">
+          <property name="text">
+           <string>Vertical Flip</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbFlippedHorizontal">
+          <property name="text">
+           <string>Horizontal Flip</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QComboBox" name="cbExposure">
+       <property name="geometry">
+        <rect>
+         <x>174</x>
+         <y>171</y>
+         <width>159</width>
+         <height>29</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupResolution">
+       <property name="geometry">
+        <rect>
+         <x>176</x>
+         <y>13</y>
+         <width>131</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Camera Resolution</string>
+       </property>
+       <widget class="QRadioButton" name="radioRes5Mp">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>29</y>
+          <width>51</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Megapixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>5Mp</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioRes8Mp">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>29</y>
+          <width>51</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Megapixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>8Mp</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_5">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>286</y>
+         <width>151</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Video Duration</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelISO">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>312</y>
+         <width>219</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>ISO</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="slideISO">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>332</y>
+         <width>331</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>3000</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_8">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>286</y>
+         <width>41</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>secs</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_9">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>249</y>
+         <width>41</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Microseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Ms</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_10">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>213</y>
+         <width>41</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Microseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Ms</string>
+       </property>
+      </widget>
+     </widget>
      <widget class="QFrame" name="frame_6">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>521</y>
+        <y>569</y>
         <width>351</width>
         <height>41</height>
        </rect>
@@ -988,13 +943,13 @@
        </property>
       </widget>
      </widget>
-     <widget class="QFrame" name="frame_7">
+     <widget class="QFrame" name="frame_3">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>475</y>
+        <y>447</y>
         <width>351</width>
-        <height>41</height>
+        <height>71</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -1003,42 +958,94 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QSlider" name="slideTriggerTime">
+      <widget class="QLabel" name="labelSquareShuterSpeed_4">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>22</y>
-         <width>331</width>
+         <x>270</x>
+         <y>45</y>
+         <width>21</width>
          <height>19</height>
         </rect>
        </property>
-       <property name="minimum">
-        <number>0</number>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;milliseconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
-       <property name="maximum">
-        <number>500</number>
-       </property>
-       <property name="value">
-        <number>3</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="tickInterval">
-        <number>1</number>
+       <property name="text">
+        <string>ms</string>
        </property>
       </widget>
-      <widget class="QLabel" name="labelTriggerTime">
+      <widget class="QSpinBox" name="spinBoxTimelapse">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>41</y>
+         <width>101</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>100</number>
+       </property>
+       <property name="maximum">
+        <number>5000</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_3">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>2</y>
-         <width>219</width>
-         <height>21</height>
+         <y>45</y>
+         <width>151</width>
+         <height>19</height>
         </rect>
        </property>
        <property name="text">
-        <string>Triggering time</string>
+        <string>Timelapse interval</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBoxTimelapseDuration">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>5</y>
+         <width>101</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>86400</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>9</y>
+         <width>151</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Timelapse duration</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSquareShuterSpeed_7">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>9</y>
+         <width>41</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seconds&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>secs</string>
        </property>
       </widget>
      </widget>
@@ -1570,7 +1577,6 @@ QSlider::handle:horizontal {
        <string>Step by Step</string>
       </property>
       <addaction name="actionExtract_frames_2"/>
-      <addaction name="actionExtract_ROI"/>
       <addaction name="actionBuild_HypCube"/>
       <addaction name="actionBuild_HypCube_2"/>
      </widget>

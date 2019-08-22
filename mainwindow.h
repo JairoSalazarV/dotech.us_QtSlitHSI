@@ -688,6 +688,11 @@ private slots:
 
     void functionTakeComposedSquarePicture();
 
+    QImage functionApplyOpticalCorrection(
+                                            const structHorizontalCalibration &horCalib,
+                                            const structVerticalCalibration &vertCalib,
+                                            const QTransform &T);
+
 private:
     Ui::MainWindow *ui;
     //QLabel *status;

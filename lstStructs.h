@@ -216,6 +216,7 @@
     typedef struct linearRegresion{
         float a;
         float b;
+        float R;
     }linearRegresion;
 
     typedef struct structVerticalCalibration{

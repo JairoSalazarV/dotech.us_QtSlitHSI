@@ -1313,13 +1313,14 @@ linearRegresion *funcCalcLinReg( float *X ){
 
 linearRegresion funcLinearRegression( double *X, double *Y, int numItems ){
 
+    /*
     if(false)
     {
         for(int i=0; i<numItems; i++)
         {
             printf("%lf, %lf\n",X[i],Y[i]);
         }
-    }
+    }*/
 
 
     linearRegresion linReg;
@@ -1328,11 +1329,15 @@ linearRegresion funcLinearRegression( double *X, double *Y, int numItems ){
     //Mean
     for(i=0;i<numItems;i++)
     {
-        mX += X[i];
-        mY += Y[i];
+        mX      += X[i];
+        mY      += Y[i];
     }
     mX /= (double)numItems;
     mY /= (double)numItems;
+
+    //printf("mX=%.2f\n",mX);
+    //printf("mY=%.2f\n",mY);
+
     //funcShowMsg("mX,mY",QString::number(mX)+", "+QString::number(mY));
     //
     for(i=0;i<numItems;i++)
@@ -1342,9 +1347,32 @@ linearRegresion funcLinearRegression( double *X, double *Y, int numItems ){
     }    
     linReg.b   = aux1 / aux2;
     linReg.a   = mY-(linReg.b*mX);
+    //printf("linReg->b: %lf \n",linReg.b);
+    //printf("linReg->a: %lf \n",linReg.a);
+
+    //
+    // Calc R^2
+    //
+    double acumError, tmpVal, denominador;
+    acumError   = 0;
+    denominador = 0;
+    for(i=0;i<numItems;i++)
+    {
+        tmpVal       = funcApplyLR(X[i],linReg);
+        //printf("%d.- X=%.2f Y=%.2f calcY=%.2f diff=%.2f diff2=%.2f Y-mY=%.2f \n",i+1,X[i],Y[i],tmpVal,Y[i]-tmpVal,((Y[i]-tmpVal)*(Y[i]-tmpVal)),Y[i]-mY);
+        tmpVal       = Y[i] - tmpVal;
+        acumError   += (tmpVal*tmpVal);
+        denominador += (Y[i] - mY) * (Y[i] - mY);
+    }
+    linReg.R    = 1.0 - (acumError/denominador);
+    if(linReg.R<0.7)exit(0);
 
     //printf("linReg->b: %lf \n",linReg.b);
     //printf("linReg->a: %lf \n",linReg.a);
+    //printf("linReg->R: %lf \n",linReg.R);
+    //printf("acumError: %lf \n",acumError);
+    //printf("denominador: %lf \n",denominador);
+    //exit(0);
     //printf("aux1: %lf \n",aux1);
     //printf("aux2: %lf \n",aux2);
     //printf("mX: %lf \n",mX);
