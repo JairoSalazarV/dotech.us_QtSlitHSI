@@ -1545,6 +1545,7 @@ QSlider::handle:horizontal {
      <property name="title">
       <string>Calib Edition</string>
      </property>
+     <addaction name="actionApply_Initial_Crop"/>
      <addaction name="actionApply_Rotation"/>
      <addaction name="actionApply_Transformation"/>
      <addaction name="actionApply_Affine_Transformation"/>
@@ -1552,6 +1553,7 @@ QSlider::handle:horizontal {
     </widget>
     <addaction name="actionLinear_Regression"/>
     <addaction name="separator"/>
+    <addaction name="actionCalc_Initial_Crop"/>
     <addaction name="actionSlide_Linear_Regression"/>
     <addaction name="actionMerge_Calibration"/>
     <addaction name="actionCalc_Sensitivities"/>
@@ -2455,6 +2457,16 @@ QSlider::handle:horizontal {
   <action name="actionApply_Region_of_Interes">
    <property name="text">
     <string>Apply Region of Interes</string>
+   </property>
+  </action>
+  <action name="actionCalc_Initial_Crop">
+   <property name="text">
+    <string>Calc Initial Crop</string>
+   </property>
+  </action>
+  <action name="actionApply_Initial_Crop">
+   <property name="text">
+    <string>Apply Initial Crop</string>
    </property>
   </action>
  </widget>

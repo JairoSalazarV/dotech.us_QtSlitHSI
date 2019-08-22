@@ -62,7 +62,7 @@
    </property>
    <property name="icon">
     <iconset resource="lstImgs.qrc">
-     <normaloff>:/new/icons/imagenInte/stop.svg</normaloff>:/new/icons/imagenInte/stop.svg</iconset>
+     <normaloff>:/new/icons/imagenInte/dialog-error.png</normaloff>:/new/icons/imagenInte/dialog-error.png</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="pbSelectFile">

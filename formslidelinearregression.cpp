@@ -20,18 +20,18 @@ formSlideLinearRegression::formSlideLinearRegression(QWidget *parent) :
 
     if(1)//VERTICAL
     {
-        QString path = "/home/jairo/Documentos/DOTECH/Calibraciones/slideBeta_001/attempt3/XML/lineas/";
+        QString path = "/home/jairo/Documentos/DOCTORADO/ImageDB/SLIT/opticalCorrection/2019/Agosto/";
         fileToOpen = path + "408.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "438.xml";
+        fileToOpen = path + "436.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "490.xml";
+        fileToOpen = path + "491.xml";
         funcAddRowToTable(&fileToOpen);
         fileToOpen = path + "548.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "585.xml";
+        fileToOpen = path + "614.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "615.xml";
+        fileToOpen = path + "709.xml";
         funcAddRowToTable(&fileToOpen);
         //fileToOpen = path + "710.xml";
         //funcAddRowToTable(&fileToOpen);
@@ -131,26 +131,27 @@ void formSlideLinearRegression::on_pbGenRegression_clicked()
     double lstX[numLines-1];//Distance in pixels between lines
     double lstY[numLines-1];//Wavelength
     float wavePixLen = 0.0;
+    float waveLen = 0.0;
     for( i=0; i<numLines-1; i++ )
     {
-        wavePixLen  = (
-                        (lstLines.at(i+1).x2 - lstLines.at(i).x2) +
-                        (lstLines.at(i+1).x1 - lstLines.at(i).x1)
-                      )/2.0;
+        wavePixLen  = lstLines.at(i+1).x1 - lstLines.at(0).x1;
+        waveLen     = (float)(lstLines.at(i+1).wavelength - lstLines.at(0).wavelength);
         lstX[i]     = wavePixLen;
-        lstY[i]     = (float)(lstLines.at(i+1).wavelength -
-                              lstLines.at(i).wavelength);
-        //std::cout << "i: " << i << " x: " << lstX[i]
-        //                        << " y: " << lstY[i] << std::endl;
+        lstY[i]     = waveLen;
+
+
+        //qDebug() << "i: " << i << " x(i+1)2: " << lstLines.at(i+1).x2 << " x(i)2: " << lstLines.at(i).x2;
+        //      qDebug() << "i: " << i << " x(i+1)1: " << lstLines.at(i+1).x1 << " x(i)1: " << lstLines.at(i).x1;
+        qDebug() << "i: " << i << " px: " << lstX[i] << " lambda: " << lstY[i] << (waveLen/wavePixLen) << (wavePixLen/waveLen);
     }
     linearRegresion wave2DistLR, dist2WaveLR;
     dist2WaveLR = funcLinearRegression(lstX,lstY,numLines-1);
     wave2DistLR = funcLinearRegression(lstY,lstX,numLines-1);
-    //std::cout << "a: " << wave2DistLR.a << " b: " << wave2DistLR.b << std::endl;
-    //std::cout << "dista: " << dist2WaveLR.a << " distb: " << dist2WaveLR.b << std::endl;
+    qDebug() << "wave2Dist, a: " << wave2DistLR.a << " b: " << wave2DistLR.b << " R: " << wave2DistLR.R;
+    qDebug() << "dis2Wave, a: " << dist2WaveLR.a << " distb: " << dist2WaveLR.b << " R: " << dist2WaveLR.R;
 
     //Read Min Wavelength
-    float smallestWaveLen   = readAllFile(_PATH_SLIDE_MIN_WAVELENGTH).trimmed().toFloat(0);
+    float smallestWaveLen   = readAllFile(_PATH_SLIDE_MIN_WAVELENGTH).trimmed().toFloat();
     smallestWaveLen         = ( smallestWaveLen < _RASP_CAM_MIN_WAVELENGTH )?_RASP_CAM_MIN_WAVELENGTH:smallestWaveLen;
     smallestWaveLen         = lstLines.at(0).wavelength - smallestWaveLen;
 
@@ -624,3 +625,9 @@ void formSlideLinearRegression::on_pbUpdateVerticalLR_clicked()
         funcShowMsgSUCCESS_Timeout("Vertical Calibration Updated");
     }
 }*/
+
+void formSlideLinearRegression::on_actionCalc_Initial_Crop_triggered()
+{
+
+
+}

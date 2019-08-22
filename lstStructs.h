@@ -613,9 +613,14 @@
         float waveToPixeRatio;
     }strlstRemarkedPix;
 
-
-
     const unsigned int streamLen = sizeof(frameStruct);
+
+    typedef struct strSlitInitialCrop{
+        int canvasW;
+        int canvasH;
+        QRect slitROI;
+        double rotationAngle;
+    }strSlitInitialCrop;
 
 
 

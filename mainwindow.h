@@ -688,10 +688,16 @@ private slots:
 
     void functionTakeComposedSquarePicture();
 
-    QImage functionApplyOpticalCorrection(
+    void functionApplyOpticalCorrection(
                                             const structHorizontalCalibration &horCalib,
                                             const structVerticalCalibration &vertCalib,
-                                            const QTransform &T);
+                                            const QTransform &T,
+                                            QImage* tmpImg
+                                        );
+
+    void on_actionCalc_Initial_Crop_triggered();
+
+    void on_actionApply_Initial_Crop_triggered();
 
 private:
     Ui::MainWindow *ui;

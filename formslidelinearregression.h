@@ -45,6 +45,8 @@ private slots:
 
     //void on_pbUpdateVerticalLR_clicked();
 
+    void on_actionCalc_Initial_Crop_triggered();
+
 private:
     Ui::formSlideLinearRegression *ui;
 };

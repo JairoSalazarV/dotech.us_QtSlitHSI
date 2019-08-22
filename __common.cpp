@@ -1365,7 +1365,11 @@ linearRegresion funcLinearRegression( double *X, double *Y, int numItems ){
         denominador += (Y[i] - mY) * (Y[i] - mY);
     }
     linReg.R    = 1.0 - (acumError/denominador);
-    if(linReg.R<0.7)exit(0);
+    if(linReg.R<0.7)
+    {
+        qDebug() << "R is to low for Linear Regression (" << linReg.R << ")";
+        exit(0);
+    }
 
     //printf("linReg->b: %lf \n",linReg.b);
     //printf("linReg->a: %lf \n",linReg.a);
@@ -3746,7 +3750,7 @@ void msg( std::string msg )
     std::cout << msg << std::endl;
 }
 
-QPoint originFromCalibration(
+QPoint  originFromCalibration(
                                 const structHorizontalCalibration &tmpHorizlCal,
                                 const structVerticalCalibration &tmpVertCal
 ){
@@ -3856,3 +3860,90 @@ int funcReadVerticalCalibration(
 
     return _OK;
 }
+
+bool funcReadSlitInitialCropFromXML( const QString &filePath, strSlitInitialCrop *slitInitialCrop )
+{
+
+    QFile *xmlFile = new QFile( filePath );
+    if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        funcShowMsg("ERROR","Loading "+ filePath );
+    }
+    QXmlStreamReader *xmlReader = new QXmlStreamReader(xmlFile);
+
+
+    //Parse the XML until we reach end of it
+    while(!xmlReader->atEnd() && !xmlReader->hasError()) {
+        // Read next element
+        QXmlStreamReader::TokenType token = xmlReader->readNext();
+        //If token is just StartDocument - go to next
+        if(token == QXmlStreamReader::StartDocument) {
+                continue;
+        }
+        //If token is StartElement - read it
+        if(token == QXmlStreamReader::StartElement) {
+            if( xmlReader->name()=="canvasW" )
+                slitInitialCrop->canvasW = xmlReader->readElementText().toInt();
+            if( xmlReader->name()=="canvasH" )
+                slitInitialCrop->canvasH = xmlReader->readElementText().toInt();
+            if( xmlReader->name()=="roiX" )
+                slitInitialCrop->slitROI.setX( xmlReader->readElementText().toInt() );
+            if( xmlReader->name()=="roiY" )
+                slitInitialCrop->slitROI.setY( xmlReader->readElementText().toInt() );
+            if( xmlReader->name()=="roiW" )
+                slitInitialCrop->slitROI.setWidth( xmlReader->readElementText().toInt() );
+            if( xmlReader->name()=="roiH" )
+                slitInitialCrop->slitROI.setHeight( xmlReader->readElementText().toInt() );
+            if( xmlReader->name()=="degrees" )
+                slitInitialCrop->rotationAngle = xmlReader->readElementText().toFloat();
+        }
+    }
+    if(xmlReader->hasError()) {
+        funcShowMsg(filePath+" parse Error",xmlReader->errorString());
+        return false;
+    }
+    xmlReader->clear();
+    xmlFile->close();
+
+    return true;
+
+}
+
+QRect funcCanvasToImgToCanvas(int prevW,
+                              int prevH,
+                              int newW,
+                              int newH,
+                              QRect* lastRect
+){
+    //Previous coordinates to Relative coordinates
+    double relX, relY, relW, relH;
+    relX = (double)lastRect->x() / (double)prevW;
+    relY = (double)lastRect->y() / (double)prevH;
+    relW = (double)lastRect->width() / (double)prevW;
+    relH = (double)lastRect->height() / (double)prevH;
+
+    //Relative coordinates to New coordinates
+    QRect newSize;
+    newSize.setX( round( relX * (double)newW ) );
+    newSize.setY( round( relY * (double)newH ) );
+    newSize.setWidth( round( relW * (double)newW ) );
+    newSize.setHeight( round( relH * (double)newH ) );
+
+    return newSize;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

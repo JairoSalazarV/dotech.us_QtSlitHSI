@@ -10890,6 +10890,10 @@ void MainWindow::funcOpticalCorrection(
     tmpVertCal.wave2DistLR      = slideCalibration->wave2DistLR;
     tmpVertCal.vertLR           = slideCalibration->vertLR;
 
+    //Show progbar
+    ui->progBar->setVisible(true);
+    ui->progBar->update();
+
     //-------------------------------------------------
     //Get into Memory Transformed Frames
     //-------------------------------------------------    
@@ -10901,11 +10905,12 @@ void MainWindow::funcOpticalCorrection(
     //for( i=0; i<1; i++ )
     {
         tmpImg  = QImage( lstFrames.at(i).absoluteFilePath() );
-        tmpImg  = functionApplyOpticalCorrection(
-                                                    tmpHorizCal,
-                                                    tmpVertCal,
-                                                    slideCalibration->translation
-                                                 );
+        functionApplyOpticalCorrection(
+                                            tmpHorizCal,
+                                            tmpVertCal,
+                                            slideCalibration->translation,
+                                            &tmpImg
+                                       );
         //Save into memory
         lstTransImages->append( tmpImg );
 
@@ -11737,7 +11742,7 @@ void MainWindow::on_actionApply_Optical_Correction_triggered()
     //-------------------------------------
     //Extract Region of Interest
     //-------------------------------------
-    *globalEditImg = functionApplyOpticalCorrection( tmpHorizCal, tmpVertCal, T );
+    functionApplyOpticalCorrection( tmpHorizCal, tmpVertCal, T, globalEditImg );
 
     //-------------------------------------
     //Display Image Transformed
@@ -11756,11 +11761,12 @@ void MainWindow::on_actionApply_Optical_Correction_triggered()
 
 }
 
-QImage MainWindow::functionApplyOpticalCorrection(
+void MainWindow::functionApplyOpticalCorrection(
         const structHorizontalCalibration &tmpHorizCal,
         const structVerticalCalibration &tmpVertCal,
-        const QTransform &T)
-{    
+        const QTransform &T,
+        QImage *tmpImg
+){
     //Calc Origin
     QPoint originP = originFromCalibration( tmpHorizCal, tmpVertCal );
 
@@ -11770,6 +11776,13 @@ QImage MainWindow::functionApplyOpticalCorrection(
     float maxWavelen  = tmpVertCal.maxWave;
     maxWavelen  = maxWavelen - tmpVertCal.minWave;
     distPixFromLower = round( funcApplyLR(maxWavelen,tmpVertCal.wave2DistLR,true) );
+
+    qDebug() << "orig_x: " << originP.x() << " orig_y: " << originP.y();
+    qDebug() << "tmpVertCal.minWave: " << tmpVertCal.minWave;
+    qDebug() << "maxWavelen: " << maxWavelen;
+    qDebug() << "originP.x(): " << originP.x();
+    qDebug() << "distPixFromLower: " << distPixFromLower;
+    //exit(0);
 
     P1.setX( originP.x() );
     P1.setY( originP.y() );
@@ -11784,13 +11797,12 @@ QImage MainWindow::functionApplyOpticalCorrection(
     subImgRec.setHeight( P2.y() - P1.y() );
 
     //Transform
-    QImage imgOptCorrec;
-    imgOptCorrec  = globalEditImg->transformed( T );
+    *tmpImg = tmpImg->transformed( T );
+    //imgOptCorrec  = globalEditImg->transformed( T );
 
     //Cut SubArea
-    imgOptCorrec  = imgOptCorrec.copy( subImgRec );
+    *tmpImg  = tmpImg->copy( subImgRec );
 
-    return imgOptCorrec;
 }
 
 
@@ -12043,3 +12055,158 @@ void MainWindow::functionTakeComposedSquarePicture()
     //progBarUpdateLabel("",0);
     mouseCursorReset();
 }
+
+void MainWindow::on_actionCalc_Initial_Crop_triggered()
+{
+    //---------------------------------------
+    //Get sources
+    //---------------------------------------
+    //Obtaining square aperture params
+    squareAperture *slitROI = (squareAperture*)malloc(sizeof(squareAperture));
+    if( !funGetSquareXML( _PATH_REGION_OF_INTERES, slitROI ) )
+    {
+        funcShowMsg("ERROR","Loading _PATH_REGION_OF_INTERES");
+        return (void)false;
+    }
+
+    //User defines the ROTATION line
+    QString rotationLinePath;
+    if( funcLetUserSelectFile(&rotationLinePath,"Select ROTATION line",this) != _OK )
+    {
+        return (void)false;
+    }
+
+    //Get the line
+    structLine rotationLine;
+    funcReadLineFromXML(&rotationLinePath,&rotationLine);
+
+    //---------------------------------------
+    //Calc Rotation Angles
+    //---------------------------------------
+    double CA, CO, angle;
+    CA      = (double)globalEditImg->height();
+    CO      = (double)(rotationLine.x2 - rotationLine.x1);
+    angle   = (atan(CO/CA) * 180.0)/3.1416;
+    qDebug() << "CA: " << CA << " CO: " << CO << " Angle: " << angle;
+
+    //---------------------------------------
+    //PREPARE STRUCTURE
+    //---------------------------------------
+    strSlitInitialCrop initialCrop;
+    initialCrop.canvasW = canvasCalib->width();
+    initialCrop.canvasH = canvasCalib->height();
+    initialCrop.slitROI.setX( slitROI->rectX );
+    initialCrop.slitROI.setY( slitROI->rectY );
+    initialCrop.slitROI.setWidth( slitROI->rectW );
+    initialCrop.slitROI.setHeight( slitROI->rectH );
+    initialCrop.rotationAngle = angle;
+
+    //----------------------------------------
+    //Ask the output file
+    //----------------------------------------
+    QString INITIAL_CROP_PATH;
+    if(
+            funcLetUserDefineFile(
+                                    &INITIAL_CROP_PATH,
+                                    "Output FILENAME...",
+                                    ".xml",
+                                    new QString(_PATH_LAST_PATH_OPENED),
+                                    new QString(_PATH_LAST_PATH_OPENED),
+                                    this
+                                 ) != _OK
+    ){
+        return (void)false;
+    }
+
+    //----------------------------------------
+    //Fill List of Fixtures and Values
+    //----------------------------------------
+    QList<QString> lstFixtures;
+    QList<QString> lstValues;
+    lstFixtures.clear();
+    lstValues.clear();
+    lstFixtures << "canvasW" << "canvasH"
+                << "roiX" << "roiY" << "roiW" << "roiH"
+                << "degrees";
+    lstValues.append(QString::number(initialCrop.canvasW));
+    lstValues.append(QString::number(initialCrop.canvasH));
+    lstValues.append(QString::number(initialCrop.slitROI.x()));
+    lstValues.append(QString::number(initialCrop.slitROI.y()));
+    lstValues.append(QString::number(initialCrop.slitROI.width()));
+    lstValues.append(QString::number(initialCrop.slitROI.height()));
+    lstValues.append(QString::number(angle));
+
+    //----------------------------------------
+    //Save line
+    //----------------------------------------
+    if( funcSaveXML(INITIAL_CROP_PATH,&lstFixtures,&lstValues) != _OK )
+    {
+        funcShowMsgERROR("Saving INITIAL_CROP_PATH");
+    }
+
+
+
+
+
+}
+
+void MainWindow::on_actionApply_Initial_Crop_triggered()
+{
+
+    //---------------------------------------
+    //Let the user select the file
+    //---------------------------------------
+    QString slitIniCropPath;
+    if( funcLetUserSelectFile(&slitIniCropPath,"Select Line...",this) != _OK )
+    {
+        return (void)false;
+    }
+
+    //---------------------------------------
+    //Read Slit Initial Crop
+    //---------------------------------------
+    strSlitInitialCrop slitInitialCrop;
+    if( !funcReadSlitInitialCropFromXML(slitIniCropPath, &slitInitialCrop) )
+    {
+        funcShowMsgERROR("Readig slitIniCropPath");
+    }
+
+    //---------------------------------------
+    //CROP ROI
+    //---------------------------------------
+    QRect newRect;
+    newRect = funcCanvasToImgToCanvas( slitInitialCrop.canvasW,
+                                       slitInitialCrop.canvasH,
+                                       globalEditImg->width(),
+                                       globalEditImg->height(),
+                                       &slitInitialCrop.slitROI);
+    *globalEditImg = globalEditImg->copy( newRect );
+
+    //---------------------------------------
+    //Rotate
+    //---------------------------------------
+    QTransform T_Rotation;
+    T_Rotation.rotate(slitInitialCrop.rotationAngle);
+    *globalEditImg = globalEditImg->transformed(T_Rotation);
+
+    //---------------------------------------
+    //Update Changes
+    //---------------------------------------
+    updateDisplayImage(globalEditImg);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -369,4 +369,12 @@
                                             structVerticalCalibration* vertCal
     );
 
+    bool funcReadSlitInitialCropFromXML( const QString &filePath, strSlitInitialCrop *slitInitialCrop );
+
+    QRect funcCanvasToImgToCanvas(int prevW,
+                                   int prevH,
+                                   int newW,
+                                   int newH,
+                                   QRect* lastRect );
+
 #endif // __COMMON_H
