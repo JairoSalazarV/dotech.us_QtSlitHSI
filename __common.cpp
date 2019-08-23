@@ -2940,6 +2940,7 @@ int funcReadSlideCalib( const QString &filePath, structSlideCalibration* slideCa
     //------------------------------------------
     QFile *xmlFile = new QFile( filePath );
     if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "filePath: " << filePath;
         return _ERROR;
     }
     QXmlStreamReader *xmlReader = new QXmlStreamReader(xmlFile);

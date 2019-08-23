@@ -375,50 +375,50 @@ void GraphicsView::funcDisplayWavelength(QMouseEvent *e)
 
 void GraphicsView::funcDiffractionDisplayWavelength(QMouseEvent *e)
 {
-    //Extract Linear Regression
-    QString LR_Contain;
-    LR_Contain = readAllFile( _PATH_CALIB_LR ); // dist2Wave | wave2Dist
-    QList<QString> LR;
-    LR = LR_Contain.split(",");
-    linearRegresion LR_Dist2Wavelen;
-    LR_Dist2Wavelen.a = LR.at(0).toDouble(0);
-    LR_Dist2Wavelen.b = LR.at(1).toDouble(0);
+    //------------------------------------
+    //Load Slit Calibration
+    //------------------------------------
+    QString selectedCalibPath;
+    selectedCalibPath = readAllFile( _PATH_SLIDE_ACTUAL_CALIB_PATH ).trimmed();
+    if( selectedCalibPath.isEmpty() )
+    {
+        funcShowMsgERROR("Please, define calibration file source.");
+        return (void)false;
+    }
+    structSlideCalibration slitCalibration;
+    if( funcReadSlideCalib( selectedCalibPath, &slitCalibration ) != _OK )
+    {
+        funcShowMsgERROR("Loading Slit Calibration: "+selectedCalibPath,this);
+        return (void)false;
+    }
 
-    //Extract Origin
-    QString LR_Origin_Path, LR_Origin_Contain;
-    LR_Origin_Path    = readAllFile( _PATH_CALIB_LR_TMP_ORIGIN );
-    LR_Origin_Contain = readAllFile( LR_Origin_Path.trimmed() );
-    QList<QString> LR_Origin;
-    LR_Origin = LR_Origin_Contain.trimmed().split(",");
-    double tmpOrigin[2];
-    tmpOrigin[0] = LR_Origin.at(0).toDouble(0);
-    tmpOrigin[1] = LR_Origin.at(1).toDouble(0);
+    //------------------------------------
+    //Calc and display wavelength
+    //------------------------------------
+    double wavelength, tmpDist, tmpOffset;
+    tmpDist = ((double)e->x() / (double)this->width()) * (double)originalW;
 
-    //Translate to Real Coordinates
-    int w, h, W, H;
-    QPixmap tmpPix(_PATH_DISPLAY_IMAGE);
-    W = tmpPix.width();
-    H = tmpPix.height();
-    w = this->width();
-    h = this->height();
+    /*
+    qDebug() << "e.x: " << e->x()
+             << " this->width(): " << this->width()
+             << " originalW: " << originalW
+             << "tmpDist: " << tmpDist;
+    exit(0);*/
 
-    double tmpPoint[2];
-    tmpPoint[0] = round( ((float)W/(float)w)*e->x() );
-    tmpPoint[1] = round( ((float)H/(float)h)*e->y() );
+    wavelength  = slitCalibration.dist2WaveLR.a + ((double)tmpDist * slitCalibration.dist2WaveLR.b);
+    wavelength += slitCalibration.originWave;
+    tmpOffset   = (-0.0001730142687*tmpDist*tmpDist) + (0.168394028*tmpDist) + (- 13.84708045);
+    wavelength += tmpOffset;
 
-    //funcShowMsg("Origin: "+QString::number(tmpOrigin[0])+","+QString::number(tmpOrigin[1]),"Point: "+QString::number(tmpPoint[0])+","+QString::number(tmpPoint[1]));
-
-    //Calc Distance
-    double distance;
-    distance = sqrt( pow( (tmpOrigin[0]-tmpPoint[0])+(tmpOrigin[1]-tmpPoint[1]),2.0) );
-
-    //Calc Wavelength
-    double wavelength;
-    wavelength = LR_Dist2Wavelen.a + (distance * LR_Dist2Wavelen.b);
-
-    //Display Wavelength
-    funcShowMsg("Wavelength","Distance: "+QString::number(distance) + " -> " + QString::number(wavelength)+"nm");
-
+    QString tmpMessage;
+    tmpMessage.append("X(");
+    tmpMessage.append(QString::number(tmpDist));
+    tmpMessage.append(") -> ");
+    tmpMessage.append(QString::number(wavelength));
+    tmpMessage.append("nm");
+    //tmpMessage.append(" tmpOffset: ");
+    //tmpMessage.append(QString::number(tmpOffset));
+    funcShowMsg("Wavelength",tmpMessage);
 }
 
 
