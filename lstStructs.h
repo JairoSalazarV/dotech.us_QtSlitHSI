@@ -314,6 +314,9 @@
         linearRegresion horizLR;
         QTransform translation;
         structSlideSensitivities sensitivities;
+        double polyDist2Wave1;
+        double polyDist2Wave2;
+        double polyDist2Wave3;
     }structSlideCalibration;
 
     typedef struct colorAnalyseResult{

@@ -2989,6 +2989,16 @@ int funcReadSlideCalib( const QString &filePath, structSlideCalibration* slideCa
                 slideCalibration->horizLR.b = xmlReader->readElementText().toFloat(0);
             if( xmlReader->name()=="maxNumCols" )
                 slideCalibration->maxNumCols = xmlReader->readElementText().toInt(0);
+
+            if( xmlReader->name()=="polyDist2Wave1" )
+                slideCalibration->polyDist2Wave1 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyDist2Wave2" )
+                slideCalibration->polyDist2Wave2 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyDist2Wave3" )
+                slideCalibration->polyDist2Wave3 = xmlReader->readElementText().toDouble();
+
+
+
             if( xmlReader->name()=="Tm11" )
                 m11 = xmlReader->readElementText().toDouble(0);
             if( xmlReader->name()=="Tm12" )
@@ -3096,6 +3106,8 @@ int funcReadSlideCalib( const QString &filePath, structSlideCalibration* slideCa
                                 &slideCalibration->sensitivities.wB );
             }
             //-------------------------------------------------------------------
+
+
         }
     }
     if(xmlReader->hasError()) {

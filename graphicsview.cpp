@@ -407,11 +407,17 @@ void GraphicsView::funcDiffractionDisplayWavelength(QMouseEvent *e)
 
     wavelength  = slitCalibration.dist2WaveLR.a + ((double)tmpDist * slitCalibration.dist2WaveLR.b);
     wavelength += slitCalibration.originWave;
-    tmpOffset   = (-0.0001730142687*tmpDist*tmpDist) + (0.168394028*tmpDist) + (- 13.84708045);
+    tmpOffset   = (slitCalibration.polyDist2Wave1*tmpDist*tmpDist) +
+                  (slitCalibration.polyDist2Wave2*tmpDist) +
+                  (slitCalibration.polyDist2Wave3);
+    //qDebug() << "slitCalibration.polyDist2Wave1: " << slitCalibration.polyDist2Wave1;
+    //qDebug() << "slitCalibration.polyDist2Wave2: " << slitCalibration.polyDist2Wave2;
+    //qDebug() << "slitCalibration.polyDist2Wave3: " << slitCalibration.polyDist2Wave3;
+    //exit(0);
     wavelength += tmpOffset;
 
     QString tmpMessage;
-    tmpMessage.append("X(");
+    tmpMessage.append("realX(");
     tmpMessage.append(QString::number(tmpDist));
     tmpMessage.append(") -> ");
     tmpMessage.append(QString::number(wavelength));
