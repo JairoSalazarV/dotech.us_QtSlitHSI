@@ -184,7 +184,7 @@
    </property>
    <property name="icon">
     <iconset resource="lstImgs.qrc">
-     <normaloff>:/new/icons/imagenInte/document-save.svg</normaloff>:/new/icons/imagenInte/document-save.svg</iconset>
+     <normaloff>:/new/icons/imagenInte/download-icon.gif</normaloff>:/new/icons/imagenInte/download-icon.gif</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="pbExportCube">
