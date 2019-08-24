@@ -265,7 +265,6 @@
 
     int funcReadVertHalfCalib(
                                 const QString &filePath,
-                                float *referenceX2,
                                 structSlideCalibration* slideCalibration
                              );
 
@@ -376,5 +375,8 @@
                                    int newW,
                                    int newH,
                                    QRect* lastRect );
+
+    double funcWave2Dist( double wavelength, const linearRegresion &wave2DistLR, const quadraticPolyRegression &polyFit );
+    double funcDist2Wave(double distance, const linearRegresion &dist2WaveLR, const quadraticPolyRegression &polyFit );
 
 #endif // __COMMON_H

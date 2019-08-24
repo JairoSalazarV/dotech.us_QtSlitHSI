@@ -25,13 +25,13 @@ formSlideLinearRegression::formSlideLinearRegression(QWidget *parent) :
         funcAddRowToTable(&fileToOpen);
         fileToOpen = path + "436.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "491.xml";
-        funcAddRowToTable(&fileToOpen);
+        //fileToOpen = path + "491.xml";
+        //funcAddRowToTable(&fileToOpen);
         fileToOpen = path + "548.xml";
         funcAddRowToTable(&fileToOpen);
         fileToOpen = path + "614.xml";
         funcAddRowToTable(&fileToOpen);
-        fileToOpen = path + "709.xml";
+        fileToOpen = path + "632.xml";
         funcAddRowToTable(&fileToOpen);
         //fileToOpen = path + "710.xml";
         //funcAddRowToTable(&fileToOpen);
@@ -365,7 +365,9 @@ int formSlideLinearRegression
                 << "lowerBoundWave" << "higherBoundWave"
                 << "dist2WaveA"     << "dist2WaveB"
                 << "wave2DistA"     << "wave2DistB"
-                << "vertA"          << "vertB";    
+                << "vertA"          << "vertB"
+                << "polyDis2Wave1"  << "polyDis2Wave2"      << "polyDis2Wave3"
+                << "polyWave2Dis1"  << "polyWave2Dis2"      << "polyWave2Dis3";
     lstValues   << QString::number(lowerVerLine->originalW);
     lstValues   << QString::number(lowerVerLine->originalH);    
     lstValues   << QString::number(lowerVerLine->x1);
@@ -380,6 +382,8 @@ int formSlideLinearRegression
     lstValues   << QString::number(wave2DistLR->b);
     lstValues   << QString::number(vertLR->a);
     lstValues   << QString::number(vertLR->b);
+    lstValues   << "0" << "0" << "0";//Dis2Wave
+    lstValues   << "0" << "0" << "0";//Wave2Dis
 
     //------------------------------------
     //Save .XML file
@@ -416,10 +420,10 @@ void formSlideLinearRegression::on_pbGenHorRegression_clicked()
     //--------------------------------------
     double X[2];
     double Y[2];
-    X[0]    = (double)lstLines.at(1).x1;
-    Y[0]    = (double)lstLines.at(1).y1;
-    X[1]    = (double)lstLines.at(1).x2;
-    Y[1]    = (double)lstLines.at(1).y2;
+    X[0]    = (double)lstLines.at(0).x1;
+    Y[0]    = (double)lstLines.at(0).y1;
+    X[1]    = (double)lstLines.at(0).x2;
+    Y[1]    = (double)lstLines.at(0).y2;
     linearRegresion horizLR = funcLinearRegression(X,Y,2);
 
     //--------------------------------------
@@ -442,17 +446,19 @@ void formSlideLinearRegression::on_pbGenHorRegression_clicked()
     }
     //main Weight
     int bigH = (lstLines.at(0).y2-lstLines.at(1).y2);
-    int imgW = lstLines.at(1).originalW;
-    int imgH = lstLines.at(1).originalH;
+    int imgW = lstLines.at(0).originalW;
+    int imgH = lstLines.at(0).originalH;
     //Save Line
     QList<QString> lstFixtures;
     QList<QString> lstValues;
-    lstFixtures << "imgW" << "imgH" << "H" << "a" << "b";
+    lstFixtures << "imgW" << "imgH" << "H" << "a" << "b" << "ySuperior" << "yInferior";
     lstValues   << QString::number(imgW)
                 << QString::number(imgH)
                 << QString::number(bigH)
                 << QString::number(horizLR.a)
-                << QString::number(horizLR.b);
+                << QString::number(horizLR.b)
+                << QString::number(lstLines.at(1).y1)
+                << QString::number(lstLines.at(0).y1);
     if( funcSaveXML(filenamePath,&lstFixtures,&lstValues) != _OK )
     {
         funcShowMsgERROR_Timeout("Saving Calibration");

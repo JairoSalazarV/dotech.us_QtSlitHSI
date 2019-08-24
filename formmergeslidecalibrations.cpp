@@ -75,13 +75,12 @@ void formMergeSlideCalibrations::on_pbMergeCalibration_clicked()
     //Read Horizontal
     structSlideCalibration slideCalibration;
     funcReadHorHalfCalib(ui->txtHorPath->text().trimmed(), &slideCalibration);
+
     //Update OriginH from User Settings
     slideCalibration.originH = ui->spinBoxOriginH->value();
     //Read Vertical
-    float referenceX2 = 0;
     funcReadVertHalfCalib(
                             ui->txtVertPath->text().trimmed(),
-                            &referenceX2,
                             &slideCalibration
                          );
 
@@ -107,6 +106,7 @@ void formMergeSlideCalibrations::on_pbMergeCalibration_clicked()
     //---------------------------------------
     //Get Origin Point
     //---------------------------------------
+    /*
     float horA, horB;
     float verA, verB;
     //Prefill Coordinates
@@ -116,6 +116,7 @@ void formMergeSlideCalibrations::on_pbMergeCalibration_clicked()
     verB  = slideCalibration.vertLR.b;
     slideCalibration.originY = round( (horB*referenceX2)+horA);
     slideCalibration.originX = round( (verB*slideCalibration.originY)+verA );
+    */
 
     //----------------------------------------------
     //Save Merged Calibration File
@@ -237,7 +238,9 @@ int formMergeSlideCalibrations
     //-----------------------------------
     QList<QString> lstFixtures;
     lstFixtures << "imgW"       << "imgH"                
-                << "originX"    << "originY"    << "originH"    << "originWave"
+                << "originX"    << "originY"
+                << "originH"
+                << "originWave"
                 << "maxWavelen"
                 << "dist2WaveA" << "dist2WaveB"
                 << "wave2DistA" << "wave2DistB"
@@ -246,7 +249,9 @@ int formMergeSlideCalibrations
                 << "maxNumCols"
                 << "Tm11"       << "Tm12"       << "Tm13"
                 << "Tm21"       << "Tm22"       << "Tm23"
-                << "Tm31"       << "Tm32"       << "Tm33" ;
+                << "Tm31"       << "Tm32"       << "Tm33"
+                << "polyDis2Wave1"  << "polyDis2Wave2" << "polyDis2Wave3"
+                << "polyWave2Dis1"  << "polyWave2Dis2" << "polyWave2Dis3";
 
     //-----------------------------------
     //Fill Values
@@ -256,6 +261,7 @@ int formMergeSlideCalibrations
                 << QString::number(slideCalibration->imgH)                
                 << QString::number(slideCalibration->originX)
                 << QString::number(slideCalibration->originY)
+                //<< QString::number(slideCalibration->originW)
                 << QString::number(slideCalibration->originH)                   
                 << QString::number(slideCalibration->originWave)
                 << QString::number(slideCalibration->maxWave)
@@ -276,7 +282,13 @@ int formMergeSlideCalibrations
                 << QString::number(T->m23())
                 << QString::number(T->m31())
                 << QString::number(T->m32())
-                << QString::number(T->m33());
+                << QString::number(T->m33())
+                << QString::number(slideCalibration->polyDist2Wave.c1)
+                << QString::number(slideCalibration->polyDist2Wave.c2)
+                << QString::number(slideCalibration->polyDist2Wave.c3)
+                << QString::number(slideCalibration->polyWave2Dist.c1)
+                << QString::number(slideCalibration->polyWave2Dist.c2)
+                << QString::number(slideCalibration->polyWave2Dist.c3);
 
     if( slideStrSens->filled )
     {

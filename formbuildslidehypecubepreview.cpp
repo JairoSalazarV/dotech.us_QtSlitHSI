@@ -120,17 +120,35 @@ QImage formBuildSlideHypeCubePreview
     //------------------------------------------------------
     int frameNotOverlapPos, frameOverlapPos, maxPos;
     int wavePos;
-    float internWavelen;
+    double internWavelen;
     maxPos              = imgW-slideW-1;
     internWavelen       = wavelength - mainSlideCalibration.originWave;
-    frameNotOverlapPos  = round( funcApplyLR(internWavelen,mainSlideCalibration.wave2DistLR,false) );
     wavePos             = round( funcApplyLR(internWavelen,mainSlideCalibration.wave2DistLR,false) );
-    frameNotOverlapPos  = frameNotOverlapPos - round((float)slideW/2.0);
+    frameNotOverlapPos  = wavePos - round((double)slideW/2.0);
     frameNotOverlapPos  = (frameNotOverlapPos<0)?0:frameNotOverlapPos;//Minimum position
     frameNotOverlapPos  = (frameNotOverlapPos<maxPos)?frameNotOverlapPos:maxPos;
     frameNotOverlapPos += overlapW;
     frameOverlapPos     = frameNotOverlapPos - overlapW;
-    layerTmpPos         = frameOverlapPos;
+
+    double shiftC1, shiftC2, shiftC3, tmpRefWave, maxShift;
+    shiftC1      = 0.00004634297014;
+    shiftC2      = -0.2921105887;
+    shiftC3      = 125.5018611;
+    tmpRefWave   = 250.0;
+    maxShift     = abs( (shiftC1*tmpRefWave*tmpRefWave) + (shiftC2*tmpRefWave) + shiftC3 );
+    layerTmpPos  = ceil( maxShift - ((shiftC1*wavelength*wavelength) + (shiftC2*wavelength) + shiftC3) );
+    layerTmpPos += ceil((8.0/356.0) * internWavelen);
+    layerTmpPos  = (layerTmpPos>=1)?layerTmpPos:1;
+
+    //qDebug() << "11) wavelength: " << wavelength << " layerTmpPos: " << layerTmpPos << " maxShift: " << maxShift;
+    /*
+    qDebug() << "slideW: " << slideW << " slideH: " << slideH;
+    qDebug() << "overlapW: " << overlapW << " notOverlapW: " << notOverlapW;
+    qDebug() << "layerW: " << layerW << " layerH: " << layerH;
+    qDebug() << "internWavelen: " << internWavelen << " wavePos: " << wavePos;
+    qDebug() << "frameNotOverlapPos: " << frameNotOverlapPos;
+    qDebug() << "layerTmpPos: " << layerTmpPos << " maxShift " << maxShift;
+    */
 
     //======================================================
     //Build Layer
@@ -163,7 +181,7 @@ QImage formBuildSlideHypeCubePreview
                                         mainSlideCalibration.sensitivities,
                                         copyOverride
                                    );
-    layerTmpPos += notOverlapW;
+    //layerTmpPos += notOverlapW;
 
     //------------------------------------------------------
     //Copy Remainder Slides

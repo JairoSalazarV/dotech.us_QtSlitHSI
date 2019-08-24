@@ -219,6 +219,12 @@
         float R;
     }linearRegresion;
 
+    typedef struct quadraticPolyRegression{
+        double c1;
+        double c2;
+        double c3;
+    }quadraticPolyRegression;
+
     typedef struct structVerticalCalibration{
         int imgW;
         int imgH;
@@ -232,6 +238,8 @@
         linearRegresion wave2DistLR;
         linearRegresion dist2WaveLR;
         linearRegresion vertLR;
+        quadraticPolyRegression polyDist2Wave;
+        quadraticPolyRegression polyWave2Dist;
     }structVerticalCalibration;
 
     typedef struct structHorizontalCalibration{
@@ -240,6 +248,8 @@
         int   H;
         float a;
         float b;
+        int ySuperior;
+        int yInferior;
     }structHorizontalCalibration;
 
     typedef struct structSlideStrSens
@@ -304,6 +314,7 @@
         int     originX;
         int     originY;
         int     originH;
+        int     originW;
         int     maxNumCols;
         float   originWave;
         float   maxWave;
@@ -314,9 +325,8 @@
         linearRegresion horizLR;
         QTransform translation;
         structSlideSensitivities sensitivities;
-        double polyDist2Wave1;
-        double polyDist2Wave2;
-        double polyDist2Wave3;
+        quadraticPolyRegression polyDist2Wave;
+        quadraticPolyRegression polyWave2Dist;
     }structSlideCalibration;
 
     typedef struct colorAnalyseResult{

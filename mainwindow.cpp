@@ -9721,15 +9721,19 @@ int MainWindow::funcReadHorizCalibration(QString* filePath, structHorizontalCali
         if(token == QXmlStreamReader::StartElement)
         {
             if( xmlReader->name()=="imgW" )
-                horizCalib->imgW = xmlReader->readElementText().trimmed().toFloat(0);
+                horizCalib->imgW = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="imgH" )
-                horizCalib->imgH = xmlReader->readElementText().trimmed().toFloat(0);
+                horizCalib->imgH = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="H" )
-                horizCalib->H = xmlReader->readElementText().trimmed().toFloat(0);
+                horizCalib->H = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="a" )
-                horizCalib->a = xmlReader->readElementText().trimmed().toFloat(0);
+                horizCalib->a = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="b" )
-                horizCalib->b = xmlReader->readElementText().trimmed().toFloat(0);
+                horizCalib->b = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="ySuperior" )
+                horizCalib->ySuperior = xmlReader->readElementText().trimmed().toInt();
+            if( xmlReader->name()=="yInferior" )
+                horizCalib->yInferior = xmlReader->readElementText().trimmed().toInt();
         }
     }
     if(xmlReader->hasError()) {
@@ -10881,6 +10885,7 @@ void MainWindow::funcOpticalCorrection(
     tmpHorizCal.a               = slideCalibration->horizLR.a;
     tmpHorizCal.b               = slideCalibration->horizLR.b;
     tmpHorizCal.H               = slideCalibration->originH;
+    tmpHorizCal.ySuperior       = slideCalibration->originY;
     //Vertical Calibration
     tmpVertCal.imgW             = slideCalibration->imgW;
     tmpVertCal.imgH             = slideCalibration->imgH;
@@ -10889,6 +10894,7 @@ void MainWindow::funcOpticalCorrection(
     tmpVertCal.dist2WaveLR      = slideCalibration->dist2WaveLR;
     tmpVertCal.wave2DistLR      = slideCalibration->wave2DistLR;
     tmpVertCal.vertLR           = slideCalibration->vertLR;
+    tmpVertCal.x1               = slideCalibration->originX;
 
     //Show progbar
     ui->progBar->setVisible(true);
@@ -10905,6 +10911,9 @@ void MainWindow::funcOpticalCorrection(
     //for( i=0; i<1; i++ )
     {
         tmpImg  = QImage( lstFrames.at(i).absoluteFilePath() );
+        //qDebug() << "tmpHorizCal.ySuperior: " << tmpHorizCal.ySuperior;
+        //qDebug() << "slideCalibration->originY: " << slideCalibration->originY;
+        //exit(0);
         functionApplyOpticalCorrection(
                                             tmpHorizCal,
                                             tmpVertCal,
@@ -11767,41 +11776,31 @@ void MainWindow::functionApplyOpticalCorrection(
         const QTransform &T,
         QImage *tmpImg
 ){
-    //Calc Origin
-    QPoint originP = originFromCalibration( tmpHorizCal, tmpVertCal );
 
-    //Defina Region of Interest
-    QPoint P1, P2;
-    int distPixFromLower;
-    float maxWavelen  = tmpVertCal.maxWave;
-    maxWavelen  = maxWavelen - tmpVertCal.minWave;
-    distPixFromLower = round( funcApplyLR(maxWavelen,tmpVertCal.wave2DistLR,true) );
-
-    qDebug() << "orig_x: " << originP.x() << " orig_y: " << originP.y();
-    qDebug() << "tmpVertCal.minWave: " << tmpVertCal.minWave;
-    qDebug() << "maxWavelen: " << maxWavelen;
-    qDebug() << "originP.x(): " << originP.x();
-    qDebug() << "distPixFromLower: " << distPixFromLower;
-    //exit(0);
-
-    P1.setX( originP.x() );
-    P1.setY( originP.y() );
-    P2.setX( originP.x() + distPixFromLower );
-    P2.setY( originP.y() + tmpHorizCal.H );
+    //Define spectral range
+    double specRange, roiW;
+    specRange   = tmpVertCal.maxWave - tmpVertCal.minWave;
+    roiW        = funcWave2Dist(specRange,tmpVertCal.wave2DistLR,tmpVertCal.polyWave2Dist);
+    //qDebug() << "tmpVertCal.x1: " << tmpVertCal.x1;
 
     //Define Subimage Rect
-    QRect subImgRec;
-    subImgRec.setX( P1.x() );
-    subImgRec.setY( P1.y() );
-    subImgRec.setWidth( P2.x() - P1.x() );
-    subImgRec.setHeight( P2.y() - P1.y() );
+    QRect ROI;
+    ROI.setX( tmpVertCal.x1 );
+    ROI.setY( tmpHorizCal.ySuperior );
+    ROI.setWidth( (int)roiW );
+    ROI.setHeight( tmpHorizCal.H );
 
     //Transform
     *tmpImg = tmpImg->transformed( T );
     //imgOptCorrec  = globalEditImg->transformed( T );
 
+    //qDebug() << "2imgW: " << tmpImg->width() << " imgH: " << tmpImg->height();
+    //qDebug() << "2ROI, x: " << ROI.x() << " y: " << ROI.y() << " w: " << ROI.width() << " h: " << ROI.height();
+    //exit(0);
+
+
     //Cut SubArea
-    *tmpImg  = tmpImg->copy( subImgRec );
+    *tmpImg  = tmpImg->copy( ROI );
 
 }
 

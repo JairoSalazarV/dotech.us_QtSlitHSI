@@ -22,14 +22,24 @@ formHypcubeBuildSettings::formHypcubeBuildSettings(QWidget *parent) :
     }
     else
     {
-        float specRes;
-        specRes = ((float)mainSlideCalibration.imgW /
-                  (float)( mainSlideCalibration.maxWave - mainSlideCalibration.originWave ));
-        //std::cout << "specRes: " << specRes << std::endl;
+        double specRes, tmpMaxWave, specRange;
+        int originW;
+
+        specRange   = mainSlideCalibration.maxWave - mainSlideCalibration.originWave;
+        originW     = floor( funcWave2Dist( specRange,
+                                            mainSlideCalibration.wave2DistLR,
+                                            mainSlideCalibration.polyWave2Dist) );
+        tmpMaxWave  = funcDist2Wave( (double)originW,
+                                     mainSlideCalibration.dist2WaveLR,
+                                     mainSlideCalibration.polyDist2Wave);
+        specRes     = (double)originW / tmpMaxWave;
+        qDebug() << "originW: " << originW << " specRange: " << specRange;
+        qDebug() << "tmpMaxWave: " << tmpMaxWave << " specRes: " << specRes;
+
         ui->spinboxSpectralResolution->setMinimum( specRes );
 
         //std::cout << "SR2: " << round((float)mainSlideCalibration.imgW/3.0) << std::endl;
-        ui->spinboxSpatialResolution->setMaximum( round((float)mainSlideCalibration.imgW/3.0) );
+        ui->spinboxSpatialResolution->setMaximum( round((double)mainSlideCalibration.imgW/3.0) );
 
         ui->spinboxExpMinWave->setMinimum( mainSlideCalibration.originWave );
         ui->spinboxExpMinWave->setMaximum( mainSlideCalibration.maxWave );
@@ -129,17 +139,17 @@ int formHypcubeBuildSettings::funcReadSettings(structExportHypcubeSettings* hypc
         if(token == QXmlStreamReader::StartElement)
         {
             if( xmlReader->name()=="spectralResolution" )
-                hypcubeSettings->spectralResolution = xmlReader->readElementText().toFloat(0);
+                hypcubeSettings->spectralResolution = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="spatialResolution" )
-                hypcubeSettings->spatialResolution = xmlReader->readElementText().toInt(0);
+                hypcubeSettings->spatialResolution = xmlReader->readElementText().toInt();
             if( xmlReader->name()=="spatialOverlap" )
-                hypcubeSettings->spatialOverlap = xmlReader->readElementText().toFloat(0);
+                hypcubeSettings->spatialOverlap = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="flip" )
-                hypcubeSettings->flip = xmlReader->readElementText().toInt(0);
+                hypcubeSettings->flip = xmlReader->readElementText().toInt();
             if( xmlReader->name()=="expMinWave" )
-                hypcubeSettings->expMinWave = xmlReader->readElementText().toFloat(0);
+                hypcubeSettings->expMinWave = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="expMaxWave" )
-                hypcubeSettings->expMaxWave = xmlReader->readElementText().toFloat(0);
+                hypcubeSettings->expMaxWave = xmlReader->readElementText().toFloat();
         }
     }
     if(xmlReader->hasError())

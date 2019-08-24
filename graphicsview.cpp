@@ -395,7 +395,7 @@ void GraphicsView::funcDiffractionDisplayWavelength(QMouseEvent *e)
     //------------------------------------
     //Calc and display wavelength
     //------------------------------------
-    double wavelength, tmpDist, tmpOffset;
+    double wavelength, tmpDist;
     tmpDist = ((double)e->x() / (double)this->width()) * (double)originalW;
 
     /*
@@ -405,16 +405,14 @@ void GraphicsView::funcDiffractionDisplayWavelength(QMouseEvent *e)
              << "tmpDist: " << tmpDist;
     exit(0);*/
 
-    wavelength  = slitCalibration.dist2WaveLR.a + ((double)tmpDist * slitCalibration.dist2WaveLR.b);
+    wavelength  = funcDist2Wave((double)tmpDist,slitCalibration.dist2WaveLR,slitCalibration.polyDist2Wave);
     wavelength += slitCalibration.originWave;
-    tmpOffset   = (slitCalibration.polyDist2Wave1*tmpDist*tmpDist) +
-                  (slitCalibration.polyDist2Wave2*tmpDist) +
-                  (slitCalibration.polyDist2Wave3);
+
     //qDebug() << "slitCalibration.polyDist2Wave1: " << slitCalibration.polyDist2Wave1;
     //qDebug() << "slitCalibration.polyDist2Wave2: " << slitCalibration.polyDist2Wave2;
     //qDebug() << "slitCalibration.polyDist2Wave3: " << slitCalibration.polyDist2Wave3;
     //exit(0);
-    wavelength += tmpOffset;
+    //wavelength += tmpOffset;
 
     QString tmpMessage;
     tmpMessage.append("realX(");

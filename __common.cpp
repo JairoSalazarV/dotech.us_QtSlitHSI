@@ -2751,10 +2751,8 @@ int funcMergeSlideCalib(
     //------------------------------------------------
 }*/
 
-int funcReadVertHalfCalib(
-                            const QString &filePath,
-                            float* referenceX2,
-                            structSlideCalibration* slideCalibration
+int funcReadVertHalfCalib(const QString &filePath,
+                          structSlideCalibration* slideCalibration
 ){
     QFile *xmlFile = new QFile( filePath );
     if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -2773,27 +2771,44 @@ int funcReadVertHalfCalib(
         //If token is StartElement - read it
         if(token == QXmlStreamReader::StartElement) {
             if( xmlReader->name()=="imgW" )
-                slideCalibration->imgW = xmlReader->readElementText().toInt(0);
+                slideCalibration->imgW = xmlReader->readElementText().toInt();
             if( xmlReader->name()=="imgH" )
-                slideCalibration->imgH = xmlReader->readElementText().toInt(0);
-            if( xmlReader->name()=="lowerBoundX2" )
-                *referenceX2 = xmlReader->readElementText().toFloat(0);
+                slideCalibration->imgH = xmlReader->readElementText().toInt();
+            if( xmlReader->name()=="lowerBoundX1" )
+                slideCalibration->originX = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="lowerBoundWave" )
-                slideCalibration->originWave = xmlReader->readElementText().toFloat(0);
+                slideCalibration->originWave = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="higherBoundWave" )
-                slideCalibration->maxWave = xmlReader->readElementText().toFloat(0);
+                slideCalibration->maxWave = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="dist2WaveA" )
-                slideCalibration->dist2WaveLR.a = xmlReader->readElementText().toFloat(0);
+                slideCalibration->dist2WaveLR.a = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="dist2WaveB" )
-                slideCalibration->dist2WaveLR.b = xmlReader->readElementText().toFloat(0);
+                slideCalibration->dist2WaveLR.b = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="wave2DistA" )
-                slideCalibration->wave2DistLR.a = xmlReader->readElementText().toFloat(0);
+                slideCalibration->wave2DistLR.a = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="wave2DistB" )
-                slideCalibration->wave2DistLR.b = xmlReader->readElementText().toFloat(0);
+                slideCalibration->wave2DistLR.b = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="vertA" )
-                slideCalibration->vertLR.a = xmlReader->readElementText().toFloat(0);
+                slideCalibration->vertLR.a = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="vertB" )
-                slideCalibration->vertLR.b = xmlReader->readElementText().toFloat(0);
+                slideCalibration->vertLR.b = xmlReader->readElementText().toFloat();
+
+            if( xmlReader->name()=="polyWave2Dis1" )
+                slideCalibration->polyWave2Dist.c1 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyWave2Dis2" )
+                slideCalibration->polyWave2Dist.c2 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyWave2Dis3" )
+                slideCalibration->polyWave2Dist.c3 = xmlReader->readElementText().toDouble();
+
+            if( xmlReader->name()=="polyDis2Wave1" )
+                slideCalibration->polyDist2Wave.c1 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyDis2Wave2" )
+                slideCalibration->polyDist2Wave.c2 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyDis2Wave3" )
+                slideCalibration->polyDist2Wave.c3 = xmlReader->readElementText().toDouble();
+
+
+
         }
     }
     if(xmlReader->hasError()) {
@@ -2825,12 +2840,15 @@ int funcReadHorHalfCalib(
         //If token is StartElement - read it
         if(token == QXmlStreamReader::StartElement) {
             if( xmlReader->name()=="H" )
-                slideCalibration->originH = xmlReader->readElementText().toInt(0);
+                slideCalibration->originH = xmlReader->readElementText().toInt();
             if( xmlReader->name()=="a" )
-                slideCalibration->horizLR.a = xmlReader->readElementText().toFloat(0);
+                slideCalibration->horizLR.a = xmlReader->readElementText().toFloat();
             if( xmlReader->name()=="b" )
-                slideCalibration->horizLR.b = xmlReader->readElementText().toFloat(0);
+                slideCalibration->horizLR.b = xmlReader->readElementText().toFloat();
+            if( xmlReader->name()=="ySuperior" )
+                slideCalibration->originY= xmlReader->readElementText().toInt();
         }
+
     }
 
     //Set translation
@@ -2990,14 +3008,19 @@ int funcReadSlideCalib( const QString &filePath, structSlideCalibration* slideCa
             if( xmlReader->name()=="maxNumCols" )
                 slideCalibration->maxNumCols = xmlReader->readElementText().toInt(0);
 
-            if( xmlReader->name()=="polyDist2Wave1" )
-                slideCalibration->polyDist2Wave1 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyDis2Wave1" )
+                slideCalibration->polyDist2Wave.c1 = xmlReader->readElementText().toDouble();
             if( xmlReader->name()=="polyDist2Wave2" )
-                slideCalibration->polyDist2Wave2 = xmlReader->readElementText().toDouble();
+                slideCalibration->polyDist2Wave.c2 = xmlReader->readElementText().toDouble();
             if( xmlReader->name()=="polyDist2Wave3" )
-                slideCalibration->polyDist2Wave3 = xmlReader->readElementText().toDouble();
+                slideCalibration->polyDist2Wave.c3 = xmlReader->readElementText().toDouble();
 
-
+            if( xmlReader->name()=="polyWave2Dis1" )
+                slideCalibration->polyWave2Dist.c1 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyWave2Dis2" )
+                slideCalibration->polyWave2Dist.c2 = xmlReader->readElementText().toDouble();
+            if( xmlReader->name()=="polyWave2Dis3" )
+                slideCalibration->polyWave2Dist.c3 = xmlReader->readElementText().toDouble();
 
             if( xmlReader->name()=="Tm11" )
                 m11 = xmlReader->readElementText().toDouble(0);
@@ -3831,37 +3854,49 @@ int funcReadVerticalCalibration(
         if(token == QXmlStreamReader::StartElement)
         {
             if( xmlReader->name()=="imgW" )
-                vertCal->imgW = xmlReader->readElementText().trimmed().toInt(0);
+                vertCal->imgW = xmlReader->readElementText().trimmed().toInt();
             if( xmlReader->name()=="imgH" )
-                vertCal->imgH = xmlReader->readElementText().trimmed().toInt(0);
-            if( xmlReader->name()=="x1" )
-                vertCal->x1 = xmlReader->readElementText().trimmed().toInt(0);
-            if( xmlReader->name()=="y1" )
-                vertCal->y1 = xmlReader->readElementText().trimmed().toInt(0);
-            if( xmlReader->name()=="x2" )
-                vertCal->x2 = xmlReader->readElementText().trimmed().toInt(0);
-            if( xmlReader->name()=="y2" )
-                vertCal->y2 = xmlReader->readElementText().trimmed().toInt(0);
+                vertCal->imgH = xmlReader->readElementText().trimmed().toInt();
+            if( xmlReader->name()=="lowerBoundX1" )
+                vertCal->x1 = xmlReader->readElementText().trimmed().toInt();
+            if( xmlReader->name()=="lowerBoundY1" )
+                vertCal->y1 = xmlReader->readElementText().trimmed().toInt();
+            if( xmlReader->name()=="lowerBoundX2" )
+                vertCal->x2 = xmlReader->readElementText().trimmed().toInt();
+            if( xmlReader->name()=="lowerBoundY2" )
+                vertCal->y2 = xmlReader->readElementText().trimmed().toInt();
             if( xmlReader->name()=="lowerBoundWave" )
-                vertCal->minWave = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->minWave = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="higherBoundWave" )
-                vertCal->maxWave = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->maxWave = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="wavelengthA" )
-                vertCal->wavelengthLR.a = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->wavelengthLR.a = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="wavelengthB" )
-                vertCal->wavelengthLR.b = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->wavelengthLR.b = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="dist2WaveA" )
-                vertCal->dist2WaveLR.a = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->dist2WaveLR.a = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="dist2WaveB" )
-                vertCal->dist2WaveLR.b = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->dist2WaveLR.b = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="wave2DistA" )
-                vertCal->wave2DistLR.a = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->wave2DistLR.a = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="wave2DistB" )
-                vertCal->wave2DistLR.b = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->wave2DistLR.b = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="vertA" )
-                vertCal->vertLR.a = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->vertLR.a = xmlReader->readElementText().trimmed().toFloat();
             if( xmlReader->name()=="vertB" )
-                vertCal->vertLR.b = xmlReader->readElementText().trimmed().toFloat(0);
+                vertCal->vertLR.b = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyDis2Wave1" )
+                vertCal->polyDist2Wave.c1 = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyDis2Wave2" )
+                vertCal->polyDist2Wave.c2 = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyDis2Wave3" )
+                vertCal->polyDist2Wave.c3 = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyWave2Dis1" )
+                vertCal->polyWave2Dist.c1 = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyWave2Dis2" )
+                vertCal->polyWave2Dist.c2 = xmlReader->readElementText().trimmed().toFloat();
+            if( xmlReader->name()=="polyWave2Dis3" )
+                vertCal->polyWave2Dist.c3 = xmlReader->readElementText().trimmed().toFloat();
         }
     }
     if(xmlReader->hasError()) {
@@ -3944,8 +3979,33 @@ QRect funcCanvasToImgToCanvas(int prevW,
     return newSize;
 }
 
+double funcWave2Dist( double wavelength, const linearRegresion &wave2DistLR, const quadraticPolyRegression &polyFit )
+{
+    double distance;
+    distance = (wavelength * wave2DistLR.b) + wave2DistLR.a;
 
+    double tmpOffset;
+    tmpOffset   = (polyFit.c1*wavelength*wavelength) +
+                  (polyFit.c2*wavelength) +
+                  (polyFit.c3);
+    distance    = distance + tmpOffset;
 
+    return distance;
+}
+
+double funcDist2Wave( double distance, const linearRegresion &dist2WaveLR, const quadraticPolyRegression &polyFit )
+{
+    double wavelength;
+    wavelength = (distance * dist2WaveLR.b) + dist2WaveLR.a;
+
+    double tmpOffset;
+    tmpOffset   = (polyFit.c1*distance*distance) +
+                  (polyFit.c2*distance) +
+                  (polyFit.c3);
+    wavelength  = wavelength + tmpOffset;
+
+    return wavelength;
+}
 
 
 
