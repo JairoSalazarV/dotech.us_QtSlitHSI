@@ -33,10 +33,10 @@ formHypcubeBuildSettings::formHypcubeBuildSettings(QWidget *parent) :
                                      mainSlideCalibration.dist2WaveLR,
                                      mainSlideCalibration.polyDist2Wave);
         specRes     = (double)originW / tmpMaxWave;
-        qDebug() << "originW: " << originW << " specRange: " << specRange;
-        qDebug() << "tmpMaxWave: " << tmpMaxWave << " specRes: " << specRes;
+        //qDebug() << "originW: " << originW << " specRange: " << specRange;
+        //qDebug() << "tmpMaxWave: " << tmpMaxWave << " specRes: " << specRes;
 
-        ui->spinboxSpectralResolution->setMinimum( specRes );
+        //ui->spinboxSpectralResolution->setMinimum( specRes );
 
         //std::cout << "SR2: " << round((float)mainSlideCalibration.imgW/3.0) << std::endl;
         ui->spinboxSpatialResolution->setMaximum( round((double)mainSlideCalibration.imgW/3.0) );

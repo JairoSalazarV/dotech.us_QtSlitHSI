@@ -241,6 +241,7 @@
         <file>imagenInte/document-properties.png</file>
         <file>imagenInte/stock_media-rec.png</file>
         <file>imagenInte/stop.png</file>
+        <file>imagenInte/saveVideo.png</file>
     </qresource>
     <qresource prefix="/">
         <file>imagenInte/rectOn.png</file>

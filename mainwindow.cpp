@@ -12209,3 +12209,60 @@ void MainWindow::on_actionApply_Initial_Crop_triggered()
 
 
 
+
+void MainWindow::on_pbSaveVideo_clicked()
+{
+    //
+    //Read the filename
+    //
+    QString fileName;
+    QString lastPath = readFileParam(_PATH_LAST_VIDEO_SAVED);
+    if( lastPath.isEmpty() )//First time using this parameter
+    {
+        lastPath = "./snapshots/";
+    }
+
+    QString videExtension;
+    videExtension.append("Documents (*");
+    videExtension.append(_VIDEO_EXTENSION);
+    videExtension.append(")");
+
+    fileName = QFileDialog::getSaveFileName(
+                                                this,
+                                                tr("Save video as..."),
+                                                lastPath,
+                                                tr( videExtension.toStdString().c_str() )
+                                            );
+    if( fileName.isEmpty() )
+    {
+        qDebug() << "Filename not defined";
+        return (void)false;
+    }
+    else
+    {
+        lastPath = funcRemoveFileNameFromPath(fileName);
+        saveFile(_PATH_LAST_VIDEO_SAVED,lastPath);
+    }
+
+    //
+    //Validate filename
+    //
+    fileName.replace(_VIDEO_EXTENSION,"");
+    fileName.append(_VIDEO_EXTENSION);
+
+    //
+    //Save image
+    //
+    QString tmpCommand;
+    tmpCommand.append("cp ");
+    tmpCommand.append(_PATH_VIDEO_RECEIVED_H264);
+    tmpCommand.append(" ");
+    tmpCommand.append(fileName);
+    if( funcExecuteCommand(tmpCommand) == _OK )
+    {
+        funcShowMsgSUCCESS_Timeout("Video copied");
+    }
+
+
+
+}

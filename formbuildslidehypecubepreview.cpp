@@ -45,7 +45,7 @@ formBuildSlideHypeCubePreview
     maxH    = screenRes.height() - yMargin;
     ui->gvSlideHypCubePreview->setGeometry(QRect(0,yMargin,maxW,maxH));
 
-    QString framePath = readAllFile(_PATH_LAST_PATH_OPENED).trimmed();
+    QString framePath = readAllFile(_PATH_LAST_SLIDE_FRAMES_4CUBE).trimmed();
     ui->txtFolder->setText(framePath);
     ui->progBar->setVisible(false);
 
@@ -112,7 +112,7 @@ QImage formBuildSlideHypeCubePreview
     slideH      = lstImgs.at(0).height();
     overlapW    = ceil( (float)slideW * (mainExportSettings.spatialOverlap/100.0));
     notOverlapW = slideW - overlapW;
-    layerW      = imgW + ( notOverlapW * (numFrames-1) );
+    layerW      = ( slideW * numFrames ) - ( overlapW * (numFrames-1) );
     layerH      = lstImgs.at(0).height();
 
     //------------------------------------------------------
@@ -124,12 +124,14 @@ QImage formBuildSlideHypeCubePreview
     maxPos              = imgW-slideW-1;
     internWavelen       = wavelength - mainSlideCalibration.originWave;
     wavePos             = round( funcApplyLR(internWavelen,mainSlideCalibration.wave2DistLR,false) );
-    frameNotOverlapPos  = wavePos - round((double)slideW/2.0);
-    frameNotOverlapPos  = (frameNotOverlapPos<0)?0:frameNotOverlapPos;//Minimum position
-    frameNotOverlapPos  = (frameNotOverlapPos<maxPos)?frameNotOverlapPos:maxPos;
+    frameNotOverlapPos  = wavePos - round((double)slideW/2.0);//Initial location
+    frameNotOverlapPos  = (frameNotOverlapPos<0)?0:frameNotOverlapPos;//Min px
+    frameNotOverlapPos  = (frameNotOverlapPos<maxPos)?frameNotOverlapPos:maxPos;//Max px
     frameNotOverlapPos += overlapW;
     frameOverlapPos     = frameNotOverlapPos - overlapW;
 
+    /*
+    //Corrige el desplazamiento desconocido
     double shiftC1, shiftC2, shiftC3, tmpRefWave, maxShift;
     shiftC1      = 0.00004634297014;
     shiftC2      = -0.2921105887;
@@ -138,7 +140,9 @@ QImage formBuildSlideHypeCubePreview
     maxShift     = abs( (shiftC1*tmpRefWave*tmpRefWave) + (shiftC2*tmpRefWave) + shiftC3 );
     layerTmpPos  = ceil( maxShift - ((shiftC1*wavelength*wavelength) + (shiftC2*wavelength) + shiftC3) );
     layerTmpPos += ceil((8.0/356.0) * internWavelen);
-    layerTmpPos  = (layerTmpPos>=1)?layerTmpPos:1;
+    layerTmpPos  = (layerTmpPos>=1)?layerTmpPos:1;*/
+
+    layerTmpPos  = 1;
 
     //qDebug() << "11) wavelength: " << wavelength << " layerTmpPos: " << layerTmpPos << " maxShift: " << maxShift;
     /*
@@ -210,7 +214,7 @@ QImage formBuildSlideHypeCubePreview
                                             mainSlideCalibration.sensitivities,
                                             copyAverage
                                        );
-        layerTmpPos += overlapW;        
+        layerTmpPos += overlapW;
 
         //..................................................
         //Copy Non-Overlap
@@ -914,7 +918,7 @@ void formBuildSlideHypeCubePreview::on_pbFolder_clicked()
     //Select Directory
     //------------------------------------------------------
     QString workDir, lastSlideFrames;
-    if( !readFileParam(_PATH_LAST_PATH_OPENED,&lastSlideFrames) )
+    if( !readFileParam(_PATH_LAST_SLIDE_FRAMES_4CUBE,&lastSlideFrames) )
     {
         lastSlideFrames.clear();
         lastSlideFrames.append(_PATH_VIDEO_FRAMES);
@@ -923,7 +927,7 @@ void formBuildSlideHypeCubePreview::on_pbFolder_clicked()
     {
         return (void)false;
     }
-    saveFile(_PATH_LAST_PATH_OPENED,workDir);
+    saveFile(_PATH_LAST_SLIDE_FRAMES_4CUBE,workDir);
     ui->txtFolder->setText(workDir);
 
     //......................................................
@@ -1051,7 +1055,7 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
     //Define Output Dir
     //------------------------------------------------------
     QString destineDir;
-    if( funcLetUserSelectDirectory(_PATH_LAST_PATH_OPENED,&destineDir) != _OK )
+    if( funcLetUserSelectDirectory(_PATH_LAST_SLIDE_HYPCUBE_EXPORTED,&destineDir) != _OK )
     {
         funcShowMsgERROR("Saving Directory",this);
         return (void)false;
@@ -1096,8 +1100,8 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
     //------------------------------------------------------
     float maxWavelen, minWavelen, specRes;//, specW;
     //int imgW;
-    maxWavelen  = mainSlideCalibration.maxWave;
-    minWavelen  = mainSlideCalibration.originWave;
+    maxWavelen  = mainExportSettings.expMaxWave;
+    minWavelen  = mainExportSettings.expMinWave;
     //imgW        = lstImgs.at(0).width();
     //specW       = maxWavelen - minWavelen;
     //specRes     = (float)imgW / specW;

@@ -699,6 +699,8 @@ private slots:
 
     void on_actionApply_Initial_Crop_triggered();
 
+    void on_pbSaveVideo_clicked();
+
 private:
     Ui::MainWindow *ui;
     //QLabel *status;

@@ -354,7 +354,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>287</x>
+         <x>270</x>
          <y>5</y>
          <width>31</width>
          <height>31</height>
@@ -484,6 +484,29 @@
        <property name="icon">
         <iconset resource="lstImgs.qrc">
          <normaloff>:/new/icons/imagenInte/takeSquare.png</normaloff>:/new/icons/imagenInte/takeSquare.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbSaveVideo">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>5</y>
+         <width>31</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Save Video</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="lstImgs.qrc">
+         <normaloff>:/new/icons/imagenInte/saveVideo.png</normaloff>:/new/icons/imagenInte/saveVideo.png</iconset>
        </property>
       </widget>
      </widget>

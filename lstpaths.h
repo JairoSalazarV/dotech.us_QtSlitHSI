@@ -19,7 +19,7 @@
 
     #define _PATH_REMOTE_TMPSETTINGS        "./tmpSettings/slideSettings.xml"
 
-    #define _PATH_LAST_SLIDE_FRAMES_4CUBE   "./settings/lastSlideFrames.hypcam"
+    #define _PATH_LAST_SLIDE_FRAMES_4CUBE   "./settings/lastSlideFrames.hypcam"    
 
 
     //#define _PATH_SETTINGS_RED_WAVELEN      "./settings/Wavelengths/RedWavelength.hypcam"
@@ -70,6 +70,7 @@
     #define _PATH_LAST_SLIDE_HYPCUBE_EXPORTED       "./settings/lastPaths/lastSlideHypCubeExported.hypcam"
     #define _PATH_LAST_SYNC_FOLDER                  "./settings/lastPaths/syncFolder.hypcam"    
     #define _PATH_LAST_VIDEO_OPENED                 "./settings/lastPaths/lastVideoOpened.hypcam"
+    #define _PATH_LAST_VIDEO_SAVED                  "./settings/lastPaths/lastVideoSaved.hypcam"
 
     #define _PATH_NDVI_THRESHOLD                    "./settings/NDVI/threshold.hypcam"
     #define _PATH_NDVI_BRILLIANT                    "./settings/NDVI/brilliant.hypcam"
@@ -134,6 +135,8 @@
 
 
     #define _PATH_TMP_HYPCUBES              "./tmpHypCubes/"
+    #define _PATH_TMP_FRAMES                "./tmpImages/frames/tmp/"
+    #define _PATH_TMP_EXPORTED_WAVEBANDS    "./tmpImages/frames/tmp/"
 
     #define _PATH_LAST_SNAPPATH             "lastSnapPath.xml"
 
