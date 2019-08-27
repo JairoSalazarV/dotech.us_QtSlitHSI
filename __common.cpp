@@ -3517,15 +3517,33 @@ float funcPixelToQE(
     //--------------------------------------------------
     //Denoise Pixel Color
     //--------------------------------------------------
+    double internWR, internWG, internWB;
+    internWR = slideSens.wR.at(wavePos);
+    internWG = slideSens.wG.at(wavePos);
+    internWB = slideSens.wB.at(wavePos);
+
+    //internWR = internWR + (1.0 - internWR);
+    //internWG = internWG + (1.0 - internWG);
+    //internWB = internWB + (1.0 - internWB);
 
     //Spectral Denoising
     float originQE;
-    originQE    = ((float)originPixColor.red() * slideSens.wR.at(wavePos))    +
-                  ((float)originPixColor.green() * slideSens.wG.at(wavePos))  +
-                  ((float)originPixColor.blue() * slideSens.wB.at(wavePos));
+
+
+
+
+    originQE    = ((float)originPixColor.red() * internWR)    +
+                  ((float)originPixColor.green() * internWG)  +
+                  ((float)originPixColor.blue() * internWB);
     //std::cout << "originQE: " << originQE << " wS: " << wS << std::endl;
     originQE    = originQE * wS;
     originQE    = (originQE>255.0)?255.0:originQE;
+
+
+    //TMP
+    originQE    = originPixColor.red();
+    originQE    = (originQE>=originPixColor.green())?originQE:originPixColor.green();
+    originQE    = (originQE>=originPixColor.blue())?originQE:originPixColor.blue();
 
     return originQE;
 
@@ -3581,13 +3599,13 @@ int funcSlideDenoiseDefineSensorToUse(
     denColSel->colorID  = _BLUE;
     denColSel->wS       = 1.0;
 
-    float wR    = slideSens.normedRalfR.at(wavePos);
-    float wG    = slideSens.normedRalfG.at(wavePos);
-    float wB    = slideSens.normedRalfB.at(wavePos);
+    float wR    = slideSens.wR.at(wavePos);
+    float wG    = slideSens.wG.at(wavePos);
+    float wB    = slideSens.wB.at(wavePos);
     float tmpX  = 0;
     if( (wR >= wG) && (wR >= wB) )
     {
-        denColSel->colorID    = _RED;
+        denColSel->colorID  = _RED;
         tmpX                = (1.0 - wR);
         tmpX                = (tmpX<1.0)?tmpX:0;
     }else if( (wG >= wR) && (wG >= wB) )
@@ -3608,6 +3626,7 @@ int funcSlideDenoiseDefineSensorToUse(
     //                      (tmpX*-0.11645)           +
     //                      1;
 
+    /*
     if(tmpX>0.2)
     {
         denColSel->wS       = (pow(tmpX,3)*3.86029)     +
@@ -3618,7 +3637,7 @@ int funcSlideDenoiseDefineSensorToUse(
     else
     {
         denColSel->wS       = 1.0;
-    }
+    }*/
 
 
     //denColSel->wS           = (denColSel->wS<1.71)?1.71:denColSel->wS;
@@ -3984,11 +4003,12 @@ double funcWave2Dist( double wavelength, const linearRegresion &wave2DistLR, con
     double distance;
     distance = (wavelength * wave2DistLR.b) + wave2DistLR.a;
 
+    /*
     double tmpOffset;
     tmpOffset   = (polyFit.c1*wavelength*wavelength) +
                   (polyFit.c2*wavelength) +
                   (polyFit.c3);
-    distance    = distance + tmpOffset;
+    distance    = distance + tmpOffset;*/
 
     return distance;
 }
@@ -4007,7 +4027,10 @@ double funcDist2Wave( double distance, const linearRegresion &dist2WaveLR, const
     return wavelength;
 }
 
-
+double funcApplyQuadPolyfit(const double &value, const quadraticPolyRegression &polyFit)
+{
+    return (polyFit.c1*value*value) + (polyFit.c2*value) + polyFit.c3;
+}
 
 
 

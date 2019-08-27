@@ -130,6 +130,11 @@ private slots:
 
     void on_pbExportCube_clicked();
 
+    void funcShiftCorrection(QImage* waveImg,
+                             const double &actualWave,
+                             const double &minWave,
+                             const double &maxWave);
+
 
 
 private:

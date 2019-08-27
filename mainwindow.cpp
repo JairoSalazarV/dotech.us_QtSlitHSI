@@ -10844,7 +10844,7 @@ void MainWindow::funcOpticalCorrection(
     //--------------------------------------------    
     double maxWavelen;
     maxWavelen = slideCalibration->maxWave;
-    std::cout << "maxWavelen: " << maxWavelen << std::endl;
+    qDebug() << "maxWavelen: " << maxWavelen;
 
     //--------------------------------------------
     //Get List of Files in Default Directory
@@ -11777,11 +11777,15 @@ void MainWindow::functionApplyOpticalCorrection(
         QImage *tmpImg
 ){
 
+
+
     //Define spectral range
     double specRange, roiW;
     specRange   = tmpVertCal.maxWave - tmpVertCal.minWave;
     roiW        = funcWave2Dist(specRange,tmpVertCal.wave2DistLR,tmpVertCal.polyWave2Dist);
     //qDebug() << "tmpVertCal.x1: " << tmpVertCal.x1;
+
+    //qDebug() << "specRange: " << specRange;
 
     //Define Subimage Rect
     QRect ROI;

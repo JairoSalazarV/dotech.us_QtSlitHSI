@@ -353,6 +353,18 @@ void formBuildSlideHypeCubePreview::on_pbApply_clicked()
     displayImageFullScreen( layerBackup );
 
     //------------------------------------------------------
+    //Fix shift
+    //------------------------------------------------------
+    //qDebug() << "layerBefore, w" << layerBackup.width() << " h: " << layerBackup.height();
+
+    //funcShiftCorrection(&layerBackup,
+      //                  ui->spinBoxWavelen->value(),
+        //                mainSlideCalibration.originWave,
+          //              mainSlideCalibration.maxWave);
+
+    //qDebug() << "layerAfter, w" << layerBackup.width() << " h: " << layerBackup.height();
+
+    //------------------------------------------------------
     //Save Last Wavelength
     //------------------------------------------------------
     saveFile(_PATH_LAST_WAVELEN_SIMULATOR,QString::number(ui->spinBoxWavelen->value()));
@@ -387,6 +399,16 @@ int formBuildSlideHypeCubePreview::funcCopyImageSubareas(
 ){
     //type[ 0:override | 1:Average | 2: maxVal | 3:minVal ]
 
+
+    /*
+    qDebug() << "originRect: " << originRect.x() << ", " << originRect.y() <<
+                ", " << originRect.width() << ", " << originRect.height();
+    qDebug() << "destinePoint: " << destinePoint.x() << ", " << destinePoint.y();
+    qDebug() << "origImg, w: " << origImg.width() << " h: " << origImg.height();
+    qDebug() << "destineImg, w: " << destineImg->width() << " h: " << destineImg->height();
+    //exit(0);*/
+
+
     int x, y;
     int originX, originY;
     int destineX, destineY;
@@ -395,17 +417,19 @@ int formBuildSlideHypeCubePreview::funcCopyImageSubareas(
     QColor destineColor;
     QColor tmpColor;
     //std::cout << "Pos: " << destineRect.x() << std::endl;
-    for(x=0; x<originRect.width(); x++)
+    for(x=0; x<originRect.width()-1; x++)//Zero-init
     {
-        for(y=0; y<originRect.height(); y++)
+        for(y=0; y<originRect.height()-1; y++)//Zero-init
         {
             //Calc Coordinates
             originX         = originRect.x()   + x;
             originY         = originRect.y()   + y;
             destineX        = destinePoint.x() + x;
             destineY        = destinePoint.y() + y;
-            //std::cout << "oX: "     << originX << " oY: "   << originY << " dX: "
-            //          << destineX   << " dY: " << destineY  << std::endl;
+            /*
+            qDebug() << "x: " << x << " y: " << y;
+            qDebug() << "oX: "     << originX << " oY: "   << originY << " dX: "
+                      << destineX   << " dY: " << destineY;*/
             //..................
             //Set Pixel
             //..................
@@ -571,6 +595,7 @@ int formBuildSlideHypeCubePreview
 
             //Save Color
             destineImg->setPixelColor(QPoint(destineX,destineY),originColor);
+            //destineImg->setPixel(destineX,destineY,origImg.pixel(originX,originY));
 
         }
     }
@@ -1098,7 +1123,7 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
     // Ralf Pag. 6
     // Spectral Resolution = (x_ir - x_ib) / (lambda_r - lambda_b)
     //------------------------------------------------------
-    float maxWavelen, minWavelen, specRes;//, specW;
+    double maxWavelen, minWavelen, specRes;//, specW;
     //int imgW;
     maxWavelen  = mainExportSettings.expMaxWave;
     minWavelen  = mainExportSettings.expMinWave;
@@ -1114,7 +1139,7 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
     //------------------------------------------------------
     //Get Layer
     //------------------------------------------------------
-    float specI, percentage;
+    double specI, percentage;
     QString tmpFileName;
     percentage = 0.0;
     //Update Progressbar
@@ -1135,6 +1160,13 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
         //std::cout << "specI: " << specI << " tmpFileName: " << tmpFileName.toStdString() << std::endl;
         //Get Layer
         layerBackup = funcGetImageAtWavelength( specI, mainSlideCalibration );
+
+        //Shift Layer
+        //funcShiftCorrection(&layerBackup,
+        //                    specI,
+        //                    mainSlideCalibration.originWave,
+        //                    mainSlideCalibration.maxWave);
+
         //Save Layer
         layerBackup.save(tmpFileName);
     }
@@ -1144,6 +1176,68 @@ void formBuildSlideHypeCubePreview::on_pbExportImages_clicked()
     ui->progBar->setVisible(false);
     ui->labelProgBar->setText("");
     mouseCursorReset();
+}
+
+void formBuildSlideHypeCubePreview::funcShiftCorrection(QImage* waveImg,
+                                                        const double &actualWave,
+                                                        const double &minWave,
+                                                        const double &maxWave
+){
+
+    //------------------------------------------------------
+    //Define polinomial fitting (HARDCODE)
+    //------------------------------------------------------
+    quadraticPolyRegression shift;
+    shift.c1 = 0.0001288815626;
+    shift.c2 = -0.4666343942;
+    shift.c3 = 190.4453553;
+
+    //------------------------------------------------------
+    //Get extreme shift (X)
+    //------------------------------------------------------
+    int shiftMinWave, shiftMaxWave, shiftActWave, posInit, posActualX, posActualY, imgNewW, imgNewH;
+    double tmpShift;
+    //Min wave
+    tmpShift        = funcApplyQuadPolyfit(minWave, shift);
+    shiftMinWave    = (int)round(-1*(tmpShift));
+    //Max wave
+    tmpShift        = funcApplyQuadPolyfit(maxWave, shift);
+    shiftMaxWave    = (int)round(-1*(tmpShift));
+    //Actual wave
+    tmpShift        = funcApplyQuadPolyfit(actualWave, shift);
+    shiftActWave    = (int)round(-1*(tmpShift));
+    //Initial Poition
+    posInit         = shiftMaxWave;
+    //Actual Position
+    posActualX      = posInit - shiftActWave + 1;
+    posActualY      = 1;
+    //New Image
+    imgNewW         = waveImg->width() + ( shiftMaxWave - shiftMinWave );
+    imgNewH         = waveImg->height();
+
+    //qDebug() << "shiftMinWave: "    << shiftMinWave;
+    //qDebug() << "shiftMaxWave: "    << shiftMaxWave;
+    //qDebug() << "shiftActWave: "    << shiftActWave;
+    //qDebug() << "posInit: "         << posInit;
+    //qDebug() << "posActualX: "      << posActualX;
+    //qDebug() << "waveImgW: "        << waveImg->width();
+    //qDebug() << "imgNewW: "         << imgNewW;
+
+
+
+    //------------------------------------------------------
+    //Create new image
+    //------------------------------------------------------
+    QImage newTmpLayer(imgNewW,imgNewH,QImage::Format_RGB32);
+    newTmpLayer.fill(Qt::GlobalColor::black);
+    QRect originRect(1,1,waveImg->width(),waveImg->height());
+    QPoint destinePoint(posActualX,posActualY);
+    funcCopyImageSubareas(originRect,destinePoint,*waveImg,&newTmpLayer,copyOverride);
+
+    //qDebug() << "Before, w" << waveImg->width() << " h: " << waveImg->height();
+    *waveImg = newTmpLayer;
+    //qDebug() << "After, w" << waveImg->width() << " h: " << waveImg->height();
+
 }
 
 void formBuildSlideHypeCubePreview::on_pbExportCube_clicked()
