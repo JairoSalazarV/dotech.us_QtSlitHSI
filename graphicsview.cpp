@@ -294,28 +294,29 @@ void GraphicsView::enableScrolls(){
 void GraphicsView::funcDisplayPixelProperties(QMouseEvent *e)
 {
     //Translate to Real Coordinates
-    int w, h, W, H;
-    QPixmap tmpPix(_PATH_DISPLAY_IMAGE);
-    W = tmpPix.width();
-    H = tmpPix.height();
-    w = this->width();
-    h = this->height();
+    int canvasW, canvasH, imgW, imgH;
+    //QPixmap tmpPix(_PATH_DISPLAY_IMAGE);
+    imgW    = this->originalW;
+    imgH    = this->originalH;
+    canvasW = this->width();
+    canvasH = this->height();
 
     double tmpPos[2];
-    tmpPos[0] = round( ((float)W/(float)w)*e->x() );
-    tmpPos[1] = round( ((float)H/(float)h)*e->y() );
-
+    tmpPos[0] = round( ((float)e->x()/(float)canvasW)*imgW );
+    tmpPos[1] = round( ((float)e->y()/(float)canvasH)*imgH );
 
     //Get the position clicked into scene
     //..
     QString tmpProp;
     QPointF tmpPoint = this->mapToScene(e->pos().x(),e->pos().y());
-    tmpProp.append("CanvasW: "+QString::number(this->scene()->width())+"\n");
-    tmpProp.append("CanvasH: "+QString::number(this->scene()->height())+"\n");
+    tmpProp.append("CanvasW: "+QString::number(canvasW)+"\n");
+    tmpProp.append("CanvasH: "+QString::number(canvasH)+"\n");
+    tmpProp.append("imgW: "+QString::number(imgW)+"\n");
+    tmpProp.append("imgH: "+QString::number(imgH)+"\n");
     tmpProp.append("x: "+QString::number(tmpPoint.x())+"\n");
     tmpProp.append("y: "+QString::number(tmpPoint.y())+"\n");
-    tmpProp.append("X: "+QString::number(tmpPos[0])+"\n");
-    tmpProp.append("Y: "+QString::number(tmpPos[1])+"\n");
+    tmpProp.append("realX: "+QString::number(tmpPos[0])+"\n");
+    tmpProp.append("realY: "+QString::number(tmpPos[1])+"\n");
     funcShowMsg("Pixel properties", tmpProp);
 }
 
