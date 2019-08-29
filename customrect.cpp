@@ -241,11 +241,25 @@ void customRect::mousePressEvent(QGraphicsSceneMouseEvent *event){
         }
         if(a->text()=="Properties"){
             qreal x,y,w,h;
+            QRect tmpReal;
             this->rect().getRect(&x,&y,&w,&h);
+            tmpReal.setX( (x/(qreal)this->parameters.W)*internOrigEditImg->width() );
+            tmpReal.setY( (y/(qreal)this->parameters.H)*internOrigEditImg->height() );
+            tmpReal.setWidth((w/(qreal)this->parameters.W)*internOrigEditImg->width() );
+            tmpReal.setHeight((h/(qreal)this->parameters.H)*internOrigEditImg->height() );
+            //internOrigEditImg
             QString tmpPropMsg;
             tmpPropMsg.append("Canvas("+QString::number(this->parameters.W)+" x " + QString::number(this->parameters.H)  +")\n");
             tmpPropMsg.append("Pos("+QString::number(x)+", " + QString::number(y)  +")\n");
             tmpPropMsg.append(QString::number(w)+" x " + QString::number(h)  +"\n");
+
+            tmpPropMsg.append("Img("+QString::number(internOrigEditImg->width())+" x " + QString::number(internOrigEditImg->height())  +")\n");
+            tmpPropMsg.append("Real(x,y,w,h): ");
+            tmpPropMsg.append(QString::number(tmpReal.x())+",");
+            tmpPropMsg.append(QString::number(tmpReal.y())+",");
+            tmpPropMsg.append(QString::number(tmpReal.width())+",");
+            tmpPropMsg.append(QString::number(tmpReal.height()));
+
             funcShowMsg("Rectangle properties",tmpPropMsg);
         }
 
