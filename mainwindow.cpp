@@ -136,6 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    this->setWindowState(Qt::WindowMaximized);
 
     //=================================================================
     // Before Start, validate minimal successfull status
@@ -2150,6 +2151,29 @@ void MainWindow::updatePreviewImage(QString* fileName)
 
 void MainWindow::updatePreviewImage(QImage* tmpImg)
 {
+    //---------------------------------------
+    //Calc thumb size
+    //---------------------------------------
+    int thumbW, thumbH;
+    thumbW = this->geometry().width() - 455;
+    thumbH = this->geometry().height() - 125;
+    //qDebug() << "thumbW: " << thumbW << "thumbH: " << thumbH;
+
+    //---------------------------------------
+    //Display Snapshot
+    //---------------------------------------
+    int maxW, maxH;
+    maxH = (thumbH<tmpImg->height())?thumbH:tmpImg->height();
+    QImage tmpThumb = tmpImg->scaledToHeight(maxH);
+    maxW = (thumbW<tmpThumb.width())?thumbW:tmpThumb.width();
+    tmpThumb = tmpThumb.scaledToWidth(maxW);
+    ui->labelVideo->setPixmap( QPixmap::fromImage(tmpThumb) );
+    ui->labelVideo->setFixedSize( tmpThumb.width(), tmpThumb.height() );
+}
+
+/*
+void MainWindow::updatePreviewImage(QImage* tmpImg)
+{
     //
     //Display Snapshot
     //
@@ -2160,7 +2184,7 @@ void MainWindow::updatePreviewImage(QImage* tmpImg)
     tmpThumb = tmpThumb.scaledToWidth(maxW);
     ui->labelVideo->setPixmap( QPixmap::fromImage(tmpThumb) );
     ui->labelVideo->setFixedSize( tmpThumb.width(), tmpThumb.height() );
-}
+}*/
 
 void MainWindow::on_pbSnapshot_clicked()
 {
