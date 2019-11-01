@@ -3410,11 +3410,13 @@ int funcLines2Translation(
         return _ERROR;
     }
     //Rotate
+    /*
     float degree;
     QString tmpRotation;
     tmpRotation = readAllFile(_PATH_LAST_ONEAXIS_ROTATION).trimmed();
-    degree = (tmpRotation.isEmpty())?0.0:tmpRotation.toFloat(0);
+    degree = (tmpRotation.isEmpty())?0.0:tmpRotation.toFloat();
     tmpTrans->rotate(degree);
+    */
 
     return _OK;
 }

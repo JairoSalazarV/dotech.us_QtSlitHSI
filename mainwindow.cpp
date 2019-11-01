@@ -10683,9 +10683,23 @@ void MainWindow::on_actionApply_Transformation_triggered()
     }
 
     //-------------------------------------
-    //Display Image Transformation
+    //Transforming Image
     //-------------------------------------
     *globalEditImg  = globalEditImg->transformed(tmpTrans);
+
+    //-------------------------------------
+    //Rotating Image
+    //-------------------------------------
+    double degree;
+    QString tmpRotation;
+    tmpRotation = readAllFile(_PATH_LAST_ONEAXIS_ROTATION).trimmed();
+    degree = (tmpRotation.isEmpty())?0.0:tmpRotation.toDouble();
+    if( degree != 0.0 )
+    {
+        QTransform tmpTrans;
+        tmpTrans.rotate(degree);
+        *globalEditImg      = globalEditImg->transformed(tmpTrans);
+    }
 
     //Update Image Preview
     updatePreviewImage(globalEditImg);
