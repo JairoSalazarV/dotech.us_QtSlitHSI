@@ -249,20 +249,20 @@ void formSlideLinearRegression::funcTableToList(QList<structLine>* lstLines)
         //Get P1
         tmpItem                 = ui->tableLstPoints->item(i,1)->text().trimmed();
         coordinates             = tmpItem.split(",");
-        tmpNewLine.x1           = coordinates.at(0).trimmed().toInt(0);
-        tmpNewLine.y1           = coordinates.at(1).trimmed().toInt(0);
+        tmpNewLine.x1           = coordinates.at(0).trimmed().toInt();
+        tmpNewLine.y1           = coordinates.at(1).trimmed().toInt();
         //Get P2
         tmpItem                 = ui->tableLstPoints->item(i,2)->text().trimmed();
         coordinates             = tmpItem.split(",");
-        tmpNewLine.x2           = coordinates.at(0).trimmed().toInt(0);
-        tmpNewLine.y2           = coordinates.at(1).trimmed().toInt(0);
+        tmpNewLine.x2           = coordinates.at(0).trimmed().toInt();
+        tmpNewLine.y2           = coordinates.at(1).trimmed().toInt();
         //Get Image Size
         tmpItem                 = ui->tableLstPoints->item(i,3)->text().trimmed();
         coordinates             = tmpItem.split(",");
-        tmpNewLine.originalW    = coordinates.at(0).trimmed().toInt(0);
-        tmpNewLine.originalH    = coordinates.at(1).trimmed().toInt(0);
+        tmpNewLine.originalW    = coordinates.at(0).trimmed().toInt();
+        tmpNewLine.originalH    = coordinates.at(1).trimmed().toInt();
         //Get wavelength
-        tmpNewLine.wavelength  = ui->tableLstPoints->item(i,0)->text().trimmed().toFloat(0);
+        tmpNewLine.wavelength  = ui->tableLstPoints->item(i,0)->text().trimmed().toFloat();
         //Add Line
         lstLines->append(tmpNewLine);
     }
@@ -491,7 +491,7 @@ void formSlideLinearRegression::on_pbGenAffinTrans_clicked()
                                 lstLines.at(1)
                              ) != _OK
     ){
-        funcShowMsgERROR_Timeout("Reading Slide Calibration");
+        funcShowMsgERROR_Timeout("Creating Transformation");
         return (void)false;
     }
 

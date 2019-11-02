@@ -3390,8 +3390,8 @@ int funcLines2Translation(
     QVector<QPointF> destinePoints;
     destinePoints.append( QPointF(upperLine.x1,upperLine.y1) );
     destinePoints.append( QPointF(upperLine.x2,upperLine.y1) );
-    destinePoints.append( QPointF(lowerLine.x1,lowerLine.y1) );
-    destinePoints.append( QPointF(lowerLine.x2,lowerLine.y1) );
+    destinePoints.append( QPointF(lowerLine.x1,lowerLine.y2) );
+    destinePoints.append( QPointF(lowerLine.x2,lowerLine.y2) );
     //Transformation Quads
     QPolygonF originQuad(originPoints);
     QPolygonF destineQuad(destinePoints);
