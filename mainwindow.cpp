@@ -11385,7 +11385,8 @@ void MainWindow::on_actionCalc_Sensitivities_triggered()
         //......................................
         //Get Halogen Value
         //......................................
-        specPos      = floor( slideCalibration.originWave + ( x * specRes ) );
+        specPos      = round( slideCalibration.originWave + ( x * specRes ) );
+        //qDebug() << "specPos: " << specPos << " specRes: " << specRes << " Halogen: " << halogenFunction.at(specPos);
         originalH[x] = halogenFunction.at(specPos);
 
         //......................................
