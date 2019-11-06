@@ -701,6 +701,12 @@ private slots:
 
     void on_pbSaveVideo_clicked();
 
+    void on_actionApply_Saved_Rotation_triggered();
+
+    void funcApplySavedRotation(QImage *image2Rotate);
+
+    double funcGetSavedRotationAngle();
+
 private:
     Ui::MainWindow *ui;
     //QLabel *status;

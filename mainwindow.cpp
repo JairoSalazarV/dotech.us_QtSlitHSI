@@ -10688,18 +10688,9 @@ void MainWindow::on_actionApply_Transformation_triggered()
     *globalEditImg  = globalEditImg->transformed(tmpTrans);
 
     //-------------------------------------
-    //Rotating Image
+    //Rotate Saved Angle
     //-------------------------------------
-    double degree;
-    QString tmpRotation;
-    tmpRotation = readAllFile(_PATH_LAST_ONEAXIS_ROTATION).trimmed();
-    degree = (tmpRotation.isEmpty())?0.0:tmpRotation.toDouble();
-    if( degree != 0.0 )
-    {
-        QTransform tmpTrans;
-        tmpTrans.rotate(degree);
-        *globalEditImg      = globalEditImg->transformed(tmpTrans);
-    }
+    funcApplySavedRotation(globalEditImg);
 
     //Update Image Preview
     updatePreviewImage(globalEditImg);
@@ -10708,6 +10699,27 @@ void MainWindow::on_actionApply_Transformation_triggered()
     updateImageCanvasEdit(globalEditImg);
 
     std::cout << "Finished successfully" << std::endl;
+}
+
+void MainWindow::funcApplySavedRotation(QImage* image2Rotate)
+{
+    double degree;
+    degree = funcGetSavedRotationAngle();
+    if( degree != 0.0 )
+    {
+        QTransform tmpTrans;
+        tmpTrans.rotate(degree);
+        *image2Rotate = image2Rotate->transformed(tmpTrans);
+    }
+}
+
+double MainWindow::funcGetSavedRotationAngle()
+{
+    double degree;
+    QString tmpRotation;
+    tmpRotation = readAllFile(_PATH_LAST_ONEAXIS_ROTATION).trimmed();
+    degree = (tmpRotation.isEmpty())?0.0:tmpRotation.toDouble();
+    return degree;
 }
 
 void MainWindow::on_actionRestore_Original_triggered()
@@ -11572,6 +11584,15 @@ void MainWindow::on_actionCalc_Sensitivities_triggered()
     forOctave.append( "wG=["+ strWG +"];\n" );
     forOctave.append( "wB=["+ strWB +"];\n" );
 
+    forOctave.append( "minWave="+ QString::number(static_cast<double>(slideCalibration.originWave)) +";\n" );
+    forOctave.append( "maxWave="+ QString::number(static_cast<double>(slideCalibration.maxWave)) +";\n" );
+    forOctave.append( "numCols = size(wR,2);\n" );
+    forOctave.append( "Waves   = minWave:((maxWave-minWave)/(numCols-1)):maxWave;\n" );
+    forOctave.append( "hold on;\n" );
+    forOctave.append( "plot(Waves,ralfR,'r');\n" );
+    forOctave.append( "plot(Waves,ralfG,'g');\n" );
+    forOctave.append( "plot(Waves,ralfB,'b');\n" );
+
     //------------------------------------------
     //Save Sensitivities File
     //------------------------------------------
@@ -11726,6 +11747,11 @@ void MainWindow::on_actionApply_Affine_Transformation_triggered()
     *globalEditImg  = globalEditImg->transformed(T);
 
     //-------------------------------------
+    //Apply Transformation
+    //-------------------------------------
+
+
+    //-------------------------------------
     //Display Image Transformed
     //-------------------------------------
 
@@ -11784,6 +11810,17 @@ void MainWindow::on_actionApply_Optical_Correction_triggered()
     {
         funcShowMsgERROR_Timeout("Reading Affine Transformation");
         return (void)false;
+    }
+
+    //-------------------------------------
+    //Rotate if necesary
+    //-------------------------------------
+    double degree;
+    degree = funcGetSavedRotationAngle();
+    if( degree != 0.0 )
+    {
+        //qDebug() << "degree: " <<degree;
+        T.rotate(degree);
     }
 
     //-------------------------------------
@@ -12307,4 +12344,16 @@ void MainWindow::on_pbSaveVideo_clicked()
 
 
 
+}
+
+void MainWindow::on_actionApply_Saved_Rotation_triggered()
+{
+    //Rotate if exist
+    funcApplySavedRotation(globalEditImg);
+
+    //Update Image Preview
+    updatePreviewImage(globalEditImg);
+
+    //Update Edit View
+    updateImageCanvasEdit(globalEditImg);
 }

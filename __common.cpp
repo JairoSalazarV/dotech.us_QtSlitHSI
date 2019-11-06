@@ -4045,3 +4045,4 @@ double funcApplyQuadPolyfit(const double &value, const quadraticPolyRegression &
 
 
 
+

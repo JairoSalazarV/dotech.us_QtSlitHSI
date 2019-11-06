@@ -381,4 +381,6 @@
 
     double funcApplyQuadPolyfit(const double &value, const quadraticPolyRegression &polyFit);
 
+
+
 #endif // __COMMON_H

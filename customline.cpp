@@ -92,15 +92,18 @@ void customLine::funcSaveLineParameters()
     //----------------------------------------
     int x1, y1, x2, y2, imgW, imgH;
     imgW    = this->parameters.originalW;
-    imgH    = this->parameters.originalH;
+    imgH    = this->parameters.originalH;        
     x1      = this->line().p1().x();
     y1      = this->line().p1().y();
     x2      = this->line().p2().x();
     y2      = this->line().p2().y();
-    x1      = (x1==0)?0:round( ( (float)x1/(float)this->parentSize.width() )  * (float)imgW);
-    y1      = (y1==0)?0:round( ( (float)y1/(float)this->parentSize.height() ) * (float)imgH);
-    x2      = (x2==0)?0:round( ( (float)x2/(float)this->parentSize.width() )  * (float)imgW);
-    y2      = (y2==0)?0:round( ( (float)y2/(float)this->parentSize.height() ) * (float)imgH);
+
+    qDebug()<< "(" <<y1 << "/" << this->parentSize.height() << ")*" <<imgH;
+    x1      = (x1==0)?0:round( ( (double)x1/(double)this->parentSize.width() )  * (double)imgW);
+    y1      = (y1==0)?0:round( ( (double)y1/(double)this->parentSize.height() ) * (double)imgH);
+    x2      = (x2==0)?0:round( ( (double)x2/(double)this->parentSize.width() )  * (double)imgW);
+    y2      = (y2==0)?0:round( ( (double)y2/(double)this->parentSize.height() ) * (double)imgH);
+    qDebug()<< "=" << y1;
 
     //----------------------------------------
     //Fill List of Fixtures and Values

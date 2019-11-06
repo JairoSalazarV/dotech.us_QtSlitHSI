@@ -1569,6 +1569,7 @@ QSlider::handle:horizontal {
       <string>Calib Edition</string>
      </property>
      <addaction name="actionApply_Initial_Crop"/>
+     <addaction name="actionApply_Saved_Rotation"/>
      <addaction name="actionApply_Rotation"/>
      <addaction name="actionApply_Transformation"/>
      <addaction name="actionApply_Affine_Transformation"/>
@@ -2490,6 +2491,11 @@ QSlider::handle:horizontal {
   <action name="actionApply_Initial_Crop">
    <property name="text">
     <string>Apply Initial Crop</string>
+   </property>
+  </action>
+  <action name="actionApply_Saved_Rotation">
+   <property name="text">
+    <string>Apply Saved Rotation</string>
    </property>
   </action>
  </widget>
