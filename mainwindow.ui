@@ -31,7 +31,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1551,6 +1551,7 @@ QSlider::handle:horizontal {
     </property>
     <addaction name="actionAbout_this"/>
     <addaction name="actionTechnical_Support"/>
+    <addaction name="actionExecution_path"/>
    </widget>
    <widget class="QMenu" name="menuMake">
     <property name="title">
@@ -2496,6 +2497,11 @@ QSlider::handle:horizontal {
   <action name="actionApply_Saved_Rotation">
    <property name="text">
     <string>Apply Saved Rotation</string>
+   </property>
+  </action>
+  <action name="actionExecution_path">
+   <property name="text">
+    <string>Execution path</string>
    </property>
   </action>
  </widget>

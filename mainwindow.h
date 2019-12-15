@@ -364,7 +364,7 @@ private slots:
 
     void applyThreshol2Scene(QString threshold);
 
-    float getLastAngle();
+    double getLastAngle();
 
     void on_actionLoadSquareRectangle_triggered();
 
@@ -706,6 +706,8 @@ private slots:
     void funcApplySavedRotation(QImage *image2Rotate);
 
     double funcGetSavedRotationAngle();
+
+    void on_actionExecution_path_triggered();
 
 private:
     Ui::MainWindow *ui;

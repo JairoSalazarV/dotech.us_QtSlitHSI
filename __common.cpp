@@ -1437,6 +1437,27 @@ int funcExecuteCommand( QString command )
     return _OK;
 }
 
+QString funcReturnExecuteCommand( const QString command )
+{
+    //Execute command
+    FILE* pipe;
+    QString result;
+    result.clear();
+    pipe = popen(command.toStdString().c_str(), "r");
+    char bufferComm[1024];
+    try {
+        while (!feof(pipe)) {
+            if (fgets(bufferComm, frameBodyLen, pipe) != nullptr){
+              result.append( bufferComm );
+            }
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
 
 QString funcExecuteCommandAnswer( char* command )
 {

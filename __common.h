@@ -145,6 +145,7 @@
     int fileExists(QString fileName );
 
     int funcExecuteCommand( QString command );
+    QString funcReturnExecuteCommand(const QString command );
 
     QString funcExecuteCommandAnswer(char* command );
 

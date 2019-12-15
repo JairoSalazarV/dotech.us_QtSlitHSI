@@ -3722,8 +3722,8 @@ void MainWindow::applyThreshol2Scene(QString threshold){
     QApplication::restoreOverrideCursor();
 }
 
-float MainWindow::getLastAngle(){
-    return readAllFile( _PATH_LAST_ROTATION ).trimmed().toFloat(0);
+double MainWindow::getLastAngle(){
+    return readAllFile( _PATH_LAST_ONEAXIS_ROTATION ).trimmed().toDouble();
 }
 
 
@@ -10642,7 +10642,9 @@ void MainWindow::on_actionApply_Rotation_triggered()
     //Get Rotation Line from User
     //------------------------------------------
     QString tmpParam;
-    tmpParam = funcGetParam("Degree","0.0").trimmed();
+    double lastDegree;
+    lastDegree = getLastAngle();
+    tmpParam = funcGetParam("Degree",QString::number(lastDegree)).trimmed();
     if( tmpParam.isEmpty() )
     {
         return (void)false;
@@ -12357,4 +12359,10 @@ void MainWindow::on_actionApply_Saved_Rotation_triggered()
 
     //Update Edit View
     updateImageCanvasEdit(globalEditImg);
+}
+
+void MainWindow::on_actionExecution_path_triggered()
+{
+    QString path = funcReturnExecuteCommand("pwd");
+    funcShowMsg_Timeout("Path",path,QMessageBox::NoIcon,this,5000);
 }
