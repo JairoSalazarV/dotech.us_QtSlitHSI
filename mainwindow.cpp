@@ -245,6 +245,7 @@ int MainWindow::funcValidateMinimalStatus()
                << "./settings/Wavelengths/" << "./settings/Calib/responses"
                << "./XML" << "./XML/camPerfils"
                << "./tmpImages/frames/tmp"
+               << "./Results/" << "./Results/Miscelaneas/"
                << _PATH_TMP_HYPCUBES;
 
     if( func_DirExistOrCreateIt( lstFolders, this ) == _ERROR )
@@ -2246,8 +2247,11 @@ void MainWindow::on_pbSnapshot_clicked()
 
 
 
-void MainWindow::funcPutImageIntoGV(QGraphicsView *gvContainer, QString imgPath){    
-    QPixmap pim(imgPath);
+void MainWindow::funcPutImageIntoGV(QGraphicsView *gvContainer, QString imgPath){
+    //QFile file(imgPath);
+    QImage tmpImg(imgPath);
+    if(tmpImg.isNull()) qDebug("null");
+    QPixmap pim = QPixmap::fromImage(tmpImg);
     QGraphicsScene *scene = new QGraphicsScene(0,0,pim.width(),pim.height());
     scene->setBackgroundBrush(pim);
     gvContainer->setScene(scene);
@@ -3854,15 +3858,26 @@ void MainWindow::on_actionSend_to_XYZ_triggered()
     //Create xycolor space
     //..
     GraphicsView *xySpace = new GraphicsView(this);
-    funcPutImageIntoGV(xySpace, "./imgResources/CIEManual.png");
+
+    funcPutImageIntoGV(xySpace, ":/new/icons/imagenInte/CIEManual.png");
     xySpace->setWindowTitle( "XY color space" );
     xySpace->show();
 
     //Transform each pixel from RGB to xy and plot it
     //..
-    QImage tmpImg(_PATH_DISPLAY_IMAGE);
+    // _PATH_LAST_USED_IMG_FILENAME
+    // _PATH_DISPLAY_IMAGE
+    QString refImgPath = readFileParam(_PATH_LAST_USED_IMG_FILENAME);
+    QImage tmpImg(refImgPath);
     int W = tmpImg.width();
     int H = tmpImg.height();
+    //qDebug() << "W: " << W << " H: " << H;
+    if( W<1 || H<1 )
+    {
+        funcShowMsgERROR_Timeout("Image size wrong");
+        return (void)NULL;
+    }
+
     int pixX, pixY;
     QRgb tmpPix;
     colSpaceXYZ *tmpXYZ = (colSpaceXYZ*)malloc(sizeof(colSpaceXYZ));
@@ -3870,12 +3885,14 @@ void MainWindow::on_actionSend_to_XYZ_triggered()
     int tmpOffsetY = -55;
     int tmpX, tmpY;
     int i;
-    qDebug() << "<lstSelPix->count(): " << lstSelPix->count();
+    //qDebug() << "<lstSelPix->count(): " << lstSelPix->count();
     for( i=0; i<lstSelPix->count(); i++ ){
         //Get pixel position in real image
         pixX = (float)(lstSelPix->at(i).first * W) / (float)canvasAux->width();
         pixY = (float)(lstSelPix->at(i).second * H) / (float)canvasAux->height();
+        //qDebug() << "xy(" << pixX << ", " <<pixY << ")";
         tmpPix = tmpImg.pixel( pixX, pixY );
+        //tmpPix = 0;
         funcRGB2XYZ( tmpXYZ, (float)qRed(tmpPix), (float)qGreen(tmpPix), (float)qBlue(tmpPix) );
         //funcRGB2XYZ( tmpXYZ, 255.0, 0, 0  );
         tmpX = floor( (tmpXYZ->x * 441.0) / 0.75 ) + tmpOffsetX;

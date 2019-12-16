@@ -242,6 +242,7 @@
         <file>imagenInte/stock_media-rec.png</file>
         <file>imagenInte/stop.png</file>
         <file>imagenInte/saveVideo.png</file>
+        <file>imagenInte/CIEManual.png</file>
     </qresource>
     <qresource prefix="/">
         <file>imagenInte/rectOn.png</file>
